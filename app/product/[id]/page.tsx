@@ -167,59 +167,9 @@ export default function ProductPage({ params }: ProductPageProps) {
               {/* Short Description */}
               <p className="text-slate-600 mb-6">{product.description}</p>
 
-              {/* Color Selection */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-slate-700 mb-3">Цвет:</h3>
-                <div className="flex space-x-3">
-                  {product.colors.map((color, index) => (
-                    <button
-                      key={color}
-                      className={`px-4 py-2 rounded-lg border ${
-                        index === 0 ? "border-orange-500 bg-orange-50" : "border-slate-200"
-                      }`}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
-              </div>
+           
 
-              {/* Memory Selection */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-slate-700 mb-3">Память:</h3>
-                <div className="flex space-x-3">
-                  {product.memory.map((mem, index) => (
-                    <button
-                      key={mem}
-                      className={`px-4 py-2 rounded-lg border ${
-                        index === 0 ? "border-orange-500 bg-orange-50" : "border-slate-200"
-                      }`}
-                    >
-                      {mem}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
-              {/* Quantity */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-slate-700 mb-3">Количество:</h3>
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={decrementQuantity}
-                    className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center hover:bg-slate-100"
-                  >
-                    -
-                  </button>
-                  <span className="w-10 text-center">{quantity}</span>
-                  <button
-                    onClick={incrementQuantity}
-                    className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center hover:bg-slate-100"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
 
               {/* Stock Status */}
               <div className="flex items-center space-x-2 mb-6">
@@ -237,7 +187,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
                   <ShoppingCart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Добавить в корзину
+                 Купить в 1 клик
                 </Button>
                 <Button
                   variant="outline"
@@ -265,14 +215,12 @@ export default function ProductPage({ params }: ProductPageProps) {
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-slate-500">Поделиться:</span>
                 <div className="flex space-x-2">
-                  {["facebook", "twitter", "instagram"].map((social) => (
                     <button
-                      key={social}
                       className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors"
                     >
                       <Share2 className="h-4 w-4 text-slate-600" />
                     </button>
-                  ))}
+                
                 </div>
               </div>
             </div>
@@ -282,7 +230,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="mt-16">
             <div className="border-b border-slate-200">
               <div className="flex overflow-x-auto space-x-8">
-                {["description", "specifications", "reviews"].map((tab) => (
+                {["description", "specifications"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -292,7 +240,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    {tab === "description" ? "Описание" : tab === "specifications" ? "Характеристики" : "Отзывы"}
+                    {tab === "description" ? "Описание" : tab === "specifications" ? "Характеристики" : ""}
                   </button>
                 ))}
               </div>
@@ -331,62 +279,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </div>
               )}
 
-              {activeTab === "reviews" && (
-                <div>
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h3 className="text-2xl font-bold text-slate-900">Отзывы клиентов</h3>
-                      <p className="text-slate-600">
-                        {product.reviews} отзывов со средней оценкой {product.rating} из 5
-                      </p>
-                    </div>
-                    <Button>Написать отзыв</Button>
-                  </div>
-
-                  <div className="space-y-6">
-                    {[
-                      {
-                        name: "Алексей П.",
-                        rating: 5,
-                        date: "15.03.2024",
-                        comment:
-                          "Отличный смартфон за свои деньги! Быстрый, с хорошей камерой и долгой автономностью. Рекомендую!",
-                      },
-                      {
-                        name: "Мария С.",
-                        rating: 4,
-                        date: "02.03.2024",
-                        comment:
-                          "В целом доволен покупкой. Единственный минус - немного нагревается при длительных играх.",
-                      },
-                    ].map((review, index) => (
-                      <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
-                        <div className="flex items-center justify-between mb-4">
-                          <div>
-                            <h4 className="font-medium text-slate-900">{review.name}</h4>
-                            <div className="flex items-center mt-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`h-4 w-4 ${
-                                    i < review.rating ? "text-yellow-400 fill-current" : "text-slate-300"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          <span className="text-sm text-slate-500">{review.date}</span>
-                        </div>
-                        <p className="text-slate-600">{review.comment}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-8 text-center">
-                    <Button variant="outline">Показать больше отзывов</Button>
-                  </div>
-                </div>
-              )}
+             
             </div>
           </div>
 

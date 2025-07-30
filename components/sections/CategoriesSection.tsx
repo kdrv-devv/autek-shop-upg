@@ -19,7 +19,8 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
+
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +33,6 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
           </p>
         </motion.div>
 
-        {/* Categories Swiper */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,9 +73,9 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
                     y: -5,
                   }}
                   onClick={() => (window.location.href = `/category/${category.name.toLowerCase()}`)}
-                  className="group cursor-pointer"
+                  className="group py-10  cursor-pointer"
                 >
-                  <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-2xl hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
+                  <div className="bg-white h-[150px] rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-2xl hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
                     {/* Background Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-pink-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

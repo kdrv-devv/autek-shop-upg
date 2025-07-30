@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "main_text": "Matiz uchun monitor",
+    "tag_line": "Plastic mustahkam maxsulot",
+    "price": {
+      "current": 120000,
+      "old": 150000,
+      "discount": 20
+    },
+    "image": "/uploads/futbolka2.png"
+  }
+]

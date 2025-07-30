@@ -1,0 +1,139 @@
+[
+  {
+    "id": 1,
+    "title": "Apple AirPods Pro (2nd Gen)",
+    "rate": 4.8,
+    "price": {
+      "current": 220,
+      "old_price": 270,
+      "discount": 18
+    },
+    "description": "Active noise cancellation va spatial audio bilan zamonaviy naushnik",
+    "uzum_link": "https://uzum.uz/product/airpods-pro-2",
+    "images": [
+      "/uploads/airpods1.png",
+      "/uploads/airpods2.png",
+      "/uploads/airpods3.png"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "HP Pavilion Gaming Laptop",
+    "rate": 4.6,
+    "price": {
+      "current": 750,
+      "old_price": 880,
+      "discount": 15
+    },
+    "description": "GTX 1650, Ryzen 5, 16GB RAM, SSD bilan kuchli noutbuk",
+    "uzum_link": "https://uzum.uz/product/hp-pavilion-gaming",
+    "images": ["/uploads/hp1.png", "/uploads/hp2.png", "/uploads/hp3.png"]
+  },
+  {
+    "id": 4,
+    "title": "Xiaomi Mi Band 8",
+    "rate": 4.5,
+    "price": {
+      "current": 45,
+      "old_price": 60,
+      "discount": 25
+    },
+    "description": "OLED ekran, yurak urishi nazorati va 20 dan ortiq sport rejimi",
+    "uzum_link": "https://uzum.uz/product/mi-band-8",
+    "images": [
+      "/uploads/miband1.png",
+      "/uploads/miband2.png",
+      "/uploads/miband3.png"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "JBL Flip 6",
+    "rate": 4.7,
+    "price": {
+      "current": 110,
+      "old_price": 150,
+      "discount": 26
+    },
+    "description": "Portativ Bluetooth speaker suv o‘tkazmaydi va kuchli basga ega",
+    "uzum_link": "https://uzum.uz/product/jbl-flip-6",
+    "images": ["/uploads/jbl1.png", "/uploads/jbl2.png", "/uploads/jbl3.png"]
+  },
+  {
+    "id": 6,
+    "title": "Sony WH-1000XM5",
+    "rate": 4.9,
+    "price": {
+      "current": 320,
+      "old_price": 400,
+      "discount": 20
+    },
+    "description": "Dunyodagi eng yaxshi noise cancelling naushniklaridan biri",
+    "uzum_link": "https://uzum.uz/product/sony-wh1000xm5",
+    "images": ["/uploads/sony1.png", "/uploads/sony2.png", "/uploads/sony3.png"]
+  },
+  {
+    "id": 7,
+    "title": "Logitech MX Master 3",
+    "rate": 4.8,
+    "price": {
+      "current": 99,
+      "old_price": 130,
+      "discount": 24
+    },
+    "description": "Productivity uchun eng zo‘r sichqoncha, USB-C va Bluetooth qo‘llab-quvvatlaydi",
+    "uzum_link": "https://uzum.uz/product/logitech-mx-master-3",
+    "images": ["/uploads/mx1.png", "/uploads/mx2.png", "/uploads/mx3.png"]
+  },
+  {
+    "id": 8,
+    "title": "Amazon Kindle Paperwhite",
+    "rate": 4.6,
+    "price": {
+      "current": 140,
+      "old_price": 170,
+      "discount": 17
+    },
+    "description": "E-ink ekran, oson o‘qish va uzoq batareya quvvati",
+    "uzum_link": "https://uzum.uz/product/kindle-paperwhite",
+    "images": [
+      "/uploads/kindle1.png",
+      "/uploads/kindle2.png",
+      "/uploads/kindle3.png"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Anker PowerCore 20000mAh",
+    "rate": 4.7,
+    "price": {
+      "current": 55,
+      "old_price": 70,
+      "discount": 21
+    },
+    "description": "Ikkita USB portli kuchli powerbank, tez zaryadlash imkoniyati",
+    "uzum_link": "https://uzum.uz/product/anker-powercore-20000",
+    "images": [
+      "/uploads/anker1.png",
+      "/uploads/anker2.png",
+      "/uploads/anker3.png"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Philips OneBlade Pro",
+    "rate": 4.4,
+    "price": {
+      "current": 65,
+      "old_price": 90,
+      "discount": 28
+    },
+    "description": "Soqol olish va shakllantirish uchun zamonaviy trimmer",
+    "uzum_link": "https://uzum.uz/product/philips-oneblade",
+    "images": [
+      "/uploads/oneblade1.png",
+      "/uploads/oneblade2.png",
+      "/uploads/oneblade3.png"
+    ]
+  }
+]

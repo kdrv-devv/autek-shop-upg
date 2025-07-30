@@ -23,7 +23,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   useEffect(() => {
-    // Simulate API call
     setTimeout(() => {
       setProducts([
         {
