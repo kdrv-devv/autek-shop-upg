@@ -12,7 +12,7 @@ export const useAxios = () => {
   const response = (props: PropsType) => {
     const { method, url, params, headers, body } = props;
     return axios({
-      url: `http://localhost:3000/api/${url}`,
+      url: `https://autek-shop-upg.vercel.app/api/${url}`,
       method,
       data: body,
       params: {
