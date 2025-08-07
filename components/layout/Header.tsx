@@ -19,6 +19,8 @@ export function Header() {
   const scrollDirection = useScrollDirection()
 
   return (
+
+    
     <>
       <motion.header
         initial={{ y: -100 }}
