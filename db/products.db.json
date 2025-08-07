@@ -1,33 +1,22 @@
 [
   {
     "id": 1,
-    "title": "Apple AirPods Pro (2nd Gen)",
+    "title": "Vertu old is gold Pro",
     "rate": 4.8,
     "price": {
       "current": 220,
       "old_price": 270,
       "discount": 18
     },
-    "description": "Active noise cancellation va spatial audio bilan zamonaviy naushnik",
-    "uzum_link": "https://uzum.uz/product/airpods-pro-2",
+    "description": "Very beatiful phone",
+    "full_description": "Vertu old is gold Pro — hashamat va texnologiyani birlashtirgan premium darajadagi telefon. Uning nafis dizayni va ishonchli funksionalligi uni klassik telefon ixlosmandlari uchun ideal tanlovga aylantiradi.",
+    "uzum_link": "https://uzum.uz/product/vertu",
     "images": [
       "/uploads/airpods1.png",
       "/uploads/airpods2.png",
       "/uploads/airpods3.png"
-    ]
-  },
-  {
-    "id": 3,
-    "title": "HP Pavilion Gaming Laptop",
-    "rate": 4.6,
-    "price": {
-      "current": 750,
-      "old_price": 880,
-      "discount": 15
-    },
-    "description": "GTX 1650, Ryzen 5, 16GB RAM, SSD bilan kuchli noutbuk",
-    "uzum_link": "https://uzum.uz/product/hp-pavilion-gaming",
-    "images": ["/uploads/hp1.png", "/uploads/hp2.png", "/uploads/hp3.png"]
+    ],
+    "category": "phones"
   },
   {
     "id": 4,
@@ -39,12 +28,14 @@
       "discount": 25
     },
     "description": "OLED ekran, yurak urishi nazorati va 20 dan ortiq sport rejimi",
+    "full_description": "Xiaomi Mi Band 8 — sog‘lom turmush tarzini kuzatuvchilar uchun zamonaviy fitnes treker. OLED ekrani bilan barcha bildirishnomalarni oson ko‘rish mumkin, yurak urishi nazorati, uyqu monitoringi va sport rejimlari bilan siz har doim formadasiz.",
     "uzum_link": "https://uzum.uz/product/mi-band-8",
     "images": [
       "/uploads/miband1.png",
       "/uploads/miband2.png",
       "/uploads/miband3.png"
-    ]
+    ],
+    "category": "smart-devices"
   },
   {
     "id": 5,
@@ -56,8 +47,10 @@
       "discount": 26
     },
     "description": "Portativ Bluetooth speaker suv o‘tkazmaydi va kuchli basga ega",
+    "full_description": "JBL Flip 6 — o‘zining kuchli ovoz sifati va suvga chidamliligi bilan mashhur portativ dinamik. Uzoq batareya muddati va kuchli bas bilan sizga istalgan joyda musiqa zavqini taqdim etadi.",
     "uzum_link": "https://uzum.uz/product/jbl-flip-6",
-    "images": ["/uploads/jbl1.png", "/uploads/jbl2.png", "/uploads/jbl3.png"]
+    "images": ["/uploads/jbl1.png", "/uploads/jbl2.png", "/uploads/jbl3.png"],
+    "category": "audio"
   },
   {
     "id": 6,
@@ -69,8 +62,14 @@
       "discount": 20
     },
     "description": "Dunyodagi eng yaxshi noise cancelling naushniklaridan biri",
+    "full_description": "Sony WH-1000XM5 — professional darajadagi ovoz sifati va ilg‘or shovqinni bekor qilish texnologiyasi bilan jihozlangan naushnik. Uzoq ishlash muddati va qulay dizayni bilan kundalik foydalanishda ideal tanlov.",
     "uzum_link": "https://uzum.uz/product/sony-wh1000xm5",
-    "images": ["/uploads/sony1.png", "/uploads/sony2.png", "/uploads/sony3.png"]
+    "images": [
+      "/uploads/sony1.png",
+      "/uploads/sony2.png",
+      "/uploads/sony3.png"
+    ],
+    "category": "audio"
   },
   {
     "id": 7,
@@ -82,8 +81,10 @@
       "discount": 24
     },
     "description": "Productivity uchun eng zo‘r sichqoncha, USB-C va Bluetooth qo‘llab-quvvatlaydi",
+    "full_description": "Logitech MX Master 3 — professionallar uchun mo‘ljallangan sichqoncha bo‘lib, ergonomik dizayni va ko‘p funksionalligi bilan mashhur. USB-C zaryadlash va Bluetooth bilan mosligi orqali har qanday qurilmada samarali ishlash imkonini beradi.",
     "uzum_link": "https://uzum.uz/product/logitech-mx-master-3",
-    "images": ["/uploads/mx1.png", "/uploads/mx2.png", "/uploads/mx3.png"]
+    "images": ["/uploads/mx1.png", "/uploads/mx2.png", "/uploads/mx3.png"],
+    "category": "accessories"
   },
   {
     "id": 8,
@@ -95,12 +96,14 @@
       "discount": 17
     },
     "description": "E-ink ekran, oson o‘qish va uzoq batareya quvvati",
+    "full_description": "Amazon Kindle Paperwhite — kitobxonlar uchun ideal elektron kitob o‘qish qurilmasi. E-ink texnologiyasi bilan ko‘zlarni charchatmaydi va bir martalik zaryad bilan haftalab foydalanish mumkin.",
     "uzum_link": "https://uzum.uz/product/kindle-paperwhite",
     "images": [
       "/uploads/kindle1.png",
       "/uploads/kindle2.png",
       "/uploads/kindle3.png"
-    ]
+    ],
+    "category": "reading-devices"
   },
   {
     "id": 9,
@@ -112,12 +115,14 @@
       "discount": 21
     },
     "description": "Ikkita USB portli kuchli powerbank, tez zaryadlash imkoniyati",
+    "full_description": "Anker PowerCore 20000mAh — uzoq safarlar uchun ideal powerbank. Ikkita USB port va tez zaryadlash texnologiyasi bilan qurilmalaringiz har doim faol holatda qoladi.",
     "uzum_link": "https://uzum.uz/product/anker-powercore-20000",
     "images": [
       "/uploads/anker1.png",
       "/uploads/anker2.png",
       "/uploads/anker3.png"
-    ]
+    ],
+    "category": "power"
   },
   {
     "id": 10,
@@ -129,11 +134,32 @@
       "discount": 28
     },
     "description": "Soqol olish va shakllantirish uchun zamonaviy trimmer",
+    "full_description": "Philips OneBlade Pro — soqol olish va uni aniq shakllantirish uchun mo‘ljallangan ilg‘or trimmer. Uzunlik sozlamalari va uzoq ishlash muddati bilan professional natijalarni kafolatlaydi.",
     "uzum_link": "https://uzum.uz/product/philips-oneblade",
     "images": [
       "/uploads/oneblade1.png",
       "/uploads/oneblade2.png",
       "/uploads/oneblade3.png"
-    ]
+    ],
+    "category": "personal-care"
+  },
+  {
+    "id": 1753862577188,
+    "title": "panda",
+    "rate": 4.3,
+    "price": {
+      "current": 0,
+      "old_price": 0,
+      "discount": 0
+    },
+    "description": "Very beautiful phone\n",
+    "full_description": "Panda — nafis va jozibali dizaynga ega telefon bo‘lib, foydalanishda estetik zavq beradi. Minimalistik ko‘rinish, zamonaviy funksiyalar bilan uyg‘unlashgan.",
+    "uzum_link": "https://uzum.uz/product/vertu",
+    "images": [
+      "/uploads/404f95b9-862f-42b6-8c23-7dd08565c302.png",
+      "/uploads/f73aa12c-d3e0-47fd-9623-a1c66ca5ac6a.png",
+      "/uploads/5ea69ed1-b185-46d9-bfe5-9ca1c5160fbc.jpg"
+    ],
+    "category": "phones"
   }
 ]

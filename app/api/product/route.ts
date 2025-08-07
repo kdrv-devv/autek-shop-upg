@@ -40,7 +40,10 @@ export async function GET() {
     return withCORS(NextResponse.json({ data: parsed }));
   } catch (err) {
     return withCORS(
-      NextResponse.json({ message: "Xatolik yuz berdi", error: err }, { status: 500 })
+      NextResponse.json(
+        { message: "Xatolik yuz berdi", error: err },
+        { status: 500 }
+      )
     );
   }
 }
@@ -58,7 +61,6 @@ export async function POST(req: Request) {
       old_price: parseFloat(formData.get("old_price")?.toString() || "0"),
       discount: parseFloat(formData.get("discount")?.toString() || "0"),
     };
-
     const description = formData.get("description")?.toString() || "";
     const uzum_link = formData.get("uzum_link")?.toString() || "";
 

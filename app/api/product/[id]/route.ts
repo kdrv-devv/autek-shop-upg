@@ -32,7 +32,7 @@ function withCORS(res: NextResponse) {
 // GET -> Bitta mahsulotni olish (id bo‘yicha)
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params } : { params: { id: string } }
 ) {
   try {
     const id = parseInt(params.id);
@@ -66,11 +66,12 @@ export async function PUT(
     const id = parseInt(params.id);
     const body = await request.json();
     const updateData = body.data || body;
-
+    
     const data = await fs.readFile(filePath, "utf-8");
     const parsed = JSON.parse(data) as Product[];
 
     const index = parsed.findIndex((el) => el.id === id);
+    
     if (index === -1) {
       return withCORS(
         NextResponse.json({ message: `ID ${id} topilmadi` }, { status: 404 })

@@ -1,33 +1,48 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination, Autoplay } from "swiper/modules"
-import { ArrowRight } from "lucide-react"
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAxios } from "@/hooks/useAxios";
+import Image from "next/image";
 
 interface Category {
-  id: number
-  name: string
-  icon: string
+  id: number;
+  title: string;
+  image: string;
 }
 
-interface CategoriesSectionProps {
-  categories: Category[]
-}
+export function CategoriesSection() {
+  const [categories, setCategory] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const axios = useAxios();
 
-export function CategoriesSection({ categories }: CategoriesSectionProps) {
+  const getCategory = async () => {
+    try {
+      let data = await axios({ url: "category", method: "GET" });
+      setCategory(data.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {getCategory()}, []);
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Популярные категории</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            Популярные категории
+          </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Выберите категорию и найдите именно то, что вам нужно
           </p>
@@ -72,7 +87,9 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
                     scale: 1.05,
                     y: -5,
                   }}
-                  onClick={() => (window.location.href = `/category/${category.name.toLowerCase()}`)}
+                  onClick={() =>
+                    (window.location.href = `/category/${category?.title.toLowerCase()}`)
+                  }
                   className="group py-10  cursor-pointer"
                 >
                   <div className="bg-white h-[150px] rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-2xl hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
@@ -80,12 +97,12 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
                     <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-pink-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                     {/* Content */}
-                    <div className="relative z-10 text-center">
-                      <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                        {category.icon}
-                      </div>
+                    <div className="relative h-full    z-10 flex flex-col items-center !justify-between text-center">
+                      <Image src={ `http://localhost:3000/${category.image as string}` } width={60} height={60} alt={category.title || "Icon"} className="text-4xl  group-hover:scale-110 transition-transform duration-300"/>
+                       
+                      
                       <h3 className="text-sm font-semibold text-slate-700 group-hover:text-orange-600 transition-colors duration-300 mb-2">
-                        {category.name}
+                        {category.title}
                       </h3>
 
                       {/* Hover Arrow */}
@@ -108,7 +125,7 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
           </Swiper>
 
           {/* Custom Navigation */}
-          <div className="flex items-center justify-center space-x-4 mt-8">
+          <div className="flex items-center  justify-center space-x-4 mt-8">
             <button className="category-swiper-button-prev w-12 h-12 bg-white rounded-full shadow-lg border border-slate-200 flex items-center justify-center hover:bg-orange-50 hover:border-orange-200 transition-colors">
               <ArrowRight className="h-5 w-5 rotate-180 text-slate-600" />
             </button>
@@ -120,5 +137,5 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

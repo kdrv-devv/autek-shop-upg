@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Search, TrendingUp, Clock } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { useAxios } from "@/hooks/useAxios"
 
 interface SearchSectionProps {
   searchQuery: string
@@ -12,15 +13,7 @@ interface SearchSectionProps {
   setShowSuggestions: (show: boolean) => void
 }
 
-const searchSuggestions = [
-  { text: "iPhone 15 Pro", type: "product", trending: true },
-  { text: "Samsung Galaxy S24", type: "product", trending: true },
-  { text: "MacBook Air M3", type: "product", trending: false },
-  { text: "iPad Pro", type: "product", trending: false },
-  { text: "AirPods Pro", type: "product", trending: true },
-]
 
-const recentSearches = ["Xiaomi Redmi", "Gaming laptop", "Wireless headphones"]
 
 export function SearchSection({
   searchQuery,
@@ -29,10 +22,32 @@ export function SearchSection({
   setShowSuggestions,
 }: SearchSectionProps) {
   const [isFocused, setIsFocused] = useState(false)
+  const [products, setProducts] = useState<any[]>([])
+  const axios = useAxios()
+  useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const data = await  axios({url:"product" , method:"GET"})
+      setProducts(data.data)
+    } catch (err) {
+      console.error("Mahsulotlarni olishda xatolik:", err)
+    }
+  }
 
-  const filteredSuggestions = searchSuggestions.filter((suggestion) =>
-    suggestion.text.toLowerCase().includes(searchQuery.toLowerCase()),
+  fetchProducts()
+}, [])
+
+
+
+  const filteredSuggestions = products.filter((suggestion) =>
+    suggestion.title.toLowerCase().includes(searchQuery.toLowerCase()),
   )
+
+
+  const goFullData = (product:any) => {
+    return window.location.href = `/product/${product.id}`
+  }
+
 
   return (
     <section className="py-12 bg-gradient-to-b from-white to-slate-50">
@@ -87,7 +102,7 @@ export function SearchSection({
 
             {/* Search Suggestions Dropdown */}
             <AnimatePresence>
-              {showSuggestions && (searchQuery.length > 0 || recentSearches.length > 0) && (
+              {showSuggestions && (searchQuery.length > 0 ) && (
                 <motion.div
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -102,7 +117,7 @@ export function SearchSection({
                         <Search className="h-4 w-4 mr-2" />
                         Результаты поиска
                       </h3>
-                      {filteredSuggestions.map((suggestion, index) => (
+                      {filteredSuggestions.map((suggestion:any, index) => (
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
@@ -110,16 +125,19 @@ export function SearchSection({
                           transition={{ delay: index * 0.05 }}
                           className="flex items-center justify-between p-3 hover:bg-orange-50 rounded-xl cursor-pointer transition-colors group"
                           onClick={() => {
-                            setSearchQuery(suggestion.text)
+                            setSearchQuery(suggestion.title)
                             setShowSuggestions(false)
+                            goFullData(suggestion)
+                            
                           }}
+                     
                         >
                           <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg flex items-center justify-center">
                               <Search className="h-5 w-5 text-orange-600" />
                             </div>
                             <span className="text-slate-700 group-hover:text-orange-600 transition-colors">
-                              {suggestion.text}
+                              {suggestion.title}
                             </span>
                           </div>
                           {suggestion.trending && (
@@ -133,33 +151,7 @@ export function SearchSection({
                     </div>
                   )}
 
-                  {/* Recent Searches */}
-                  {searchQuery.length === 0 && recentSearches.length > 0 && (
-                    <div className="p-4 border-t border-slate-100">
-                      <h3 className="text-sm font-semibold text-slate-500 mb-3 flex items-center">
-                        <Clock className="h-4 w-4 mr-2" />
-                        Недавние поиски
-                      </h3>
-                      {recentSearches.map((search, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors group"
-                          onClick={() => {
-                            setSearchQuery(search)
-                            setShowSuggestions(false)
-                          }}
-                        >
-                          <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                            <Clock className="h-4 w-4 text-slate-500" />
-                          </div>
-                          <span className="text-slate-600 group-hover:text-slate-900 transition-colors">{search}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  )}
+                
 
                   {/* Popular Categories */}
                   <div className="p-4 bg-slate-50/50 border-t border-slate-100">

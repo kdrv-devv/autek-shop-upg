@@ -44,21 +44,20 @@ export function Header() {
             {/* Actions */}
             <div className="flex items-center space-x-3">
               {/* Search */}
-              <Button
+             <div className="flex items-center">
+               <Button
+               id="search-btn"
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsSearchOpen(true)}
                 className="relative hover:bg-slate-100 transition-colors"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-5 w-5" /> 
               </Button>
-
+                <label className="cursor-pointer" htmlFor="search-btn" >Search</label>
+             </div> 
             
-              {/* Wishlist */}
-              <Button variant="ghost" size="icon" className="relative">
-                <Heart className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-pink-500">5</Badge>
-              </Button>
+             
 
             
 

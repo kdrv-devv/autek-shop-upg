@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useAxios } from "@/hooks/useAxios";
+import { Rate } from 'antd';
 
 interface Product {
   id: number;
@@ -14,14 +17,29 @@ interface Product {
   price: string;
   originalPrice: string;
   image: string;
-  rating: number;
+  rate: number;
+  uzum_link:string
 }
 
 interface FeaturedProductsProps {
   products: Product[];
 }
 
-export function FeaturedProducts({ products }: FeaturedProductsProps) {
+export function FeaturedProducts() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const axios = useAxios();
+
+  const fetchPopularProd = async () => {
+    let data = await axios({ url: "popular-prod", method: "GET" });
+    setProducts(data.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPopularProd();
+  }, []);
+
   return (
     <section className="py-20 bg-gradient-to-b from-slate-50 to-white">
       <div className="container mx-auto px-4">
@@ -52,10 +70,10 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              onClick={() => (window.location.href = `/product/${product.id}`)}
+              onClick={() => window.open(product.uzum_link, "_blank")}
               className="group cursor-pointer"
             >
-              <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
+              <div className="bg-white rounded-3xl h-[580px] shadow-xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
                 {/* Product Image Section */}
                 <div className="relative h-80 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
                   {/* Discount Badge */}
@@ -105,21 +123,12 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                 {/* Product Info Section */}
                 <div className="p-8">
                   {/* Rating */}
-                  <div className="flex items-center space-x-2 mb-4">
+                  <div className="flex items-start space-x-2 mb-4">
                     <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(product.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-slate-300"
-                          }`}
-                        />
-                      ))}
+                      <Rate disabled defaultValue={product?.rate} />
                     </div>
                     <span className="text-sm text-slate-600 font-medium">
-                      {product.rating} (127 отзывов)
+                     ( {product.rate} )
                     </span>
                   </div>
 

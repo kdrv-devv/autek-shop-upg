@@ -4,8 +4,10 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
 
-export function ProductCard3D() {
+export function ProductCard3D({ img , title , loading } : {img:any , title:any , loading:any}) {
   const [isHovered, setIsHovered] = useState(false)
+  console.log(img , title);
+  
 
   return (
     <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
@@ -76,8 +78,8 @@ export function ProductCard3D() {
             transition={{ duration: 0.3 }}
           >
               <Image
-              src="https://ipowerresale.com/cdn/shop/files/media_767d6313-8b51-4915-ae53-b0d72a1f811a.png?v=1737419927"
-              alt="Redmi 12C Pro"
+              src={`http://localhost:3000/${img}`}
+              alt={title && "AUTEK MAXSULOTI"}
               fill
               className="object-contain drop-shadow-2xl"
             />
@@ -93,8 +95,8 @@ export function ProductCard3D() {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-orange-500">50MP</div>
-              <div className="text-xs text-slate-600">Камера</div>
+              <div className="text-lg sm:text-2xl font-bold text-orange-500">Новый</div>
+              <div className="text-xs text-slate-600">продукт</div>
             </div>
           </motion.div>
 
@@ -107,8 +109,8 @@ export function ProductCard3D() {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-blue-500">5000</div>
-              <div className="text-xs text-slate-600">mAh</div>
+              <div className="text-lg sm:text-2xl font-bold text-blue-500">New</div>
+              <div className="text-xs text-slate-600">product</div>
             </div>
           </motion.div>
         </motion.div>

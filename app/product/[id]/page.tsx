@@ -1,73 +1,78 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Star, Heart, Share2, ShoppingCart, Check, ArrowLeft } from "lucide-react"
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
-import { Button } from "@/components/ui/Button"
-import { Badge } from "@/components/ui/Badge"
-import Link from "next/link"
-import Image from "next/image"
+import { useEffect, useState } from "react";
+import {
+  Star,
+  Heart,
+  Share2,
+  ShoppingCart,
+  Check,
+  ArrowLeft,
+  Loader,
+} from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import Link from "next/link";
+import Image from "next/image";
+import { useAxios } from "@/hooks/useAxios";
+import { Rate } from 'antd';
+
 
 interface ProductPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
+}
+
+interface Price {
+  current: number; // Hozirgi narx
+  old_price: number; // Eski narx
+  discount: number; // Foizli chegirma
+}
+
+interface Product {
+  id: number;
+  title: string;
+  rate: number; // Reyting (masalan: 4.5)
+  price: Price; // Narx bo‘limi - alohida interface orqali
+  description: string; // Mahsulot tavsifi
+  uzum_link: string; // Uzumdagi mahsulot sahifasi havolasi
+  images: string[]; // Mahsulot rasmi uchun pathlar ro‘yxati
+  category: string; // Mahsulot toifasi (masalan: "smart-devices")
+  full_description: string;
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const { id } = params
-  const [activeTab, setActiveTab] = useState("description")
-  const [activeImage, setActiveImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)
+  const { id } = params;
+  const [activeTab, setActiveTab] = useState("description");
+  const [activeImage, setActiveImage] = useState(0);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // Mock product data
-  const product = {
-    id,
-    name: "POCO X5 Pro 5G",
-    description:
-      "POCO X5 Pro 5G - это мощный смартфон с процессором Snapdragon 778G, 120Гц AMOLED дисплеем и камерой 108 МП. Идеальное сочетание производительности и стиля.",
-    price: "24 990 ₽",
-    originalPrice: "29 990 ₽",
-    discount: "17%",
-    rating: 4.8,
-    reviews: 127,
-    inStock: true,
-    images: [
-      "https://i04.appmifile.com/826_item_ru/10/07/2023/36ce2c7bd69f5d4e7e128c38e7d66f26!400x400!85.png",
-      "https://cdn.ksyru0-fusion.fds.api.mi-img.com/b2c-mishop-pms-ru/pms_1675405371.27892653.png?w=800&h=800&thumb=1",
-      "https://m.media-amazon.com/images/I/61R23gA9kAL._UF1000,1000_QL80_.jpg",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIon8Eby27RfScGid8qaUM3Uvj-mA0KsOqnQ&s",
-    ],
-    colors: ["Черный", "Синий", "Зеленый"],
-    memory: ["128GB", "256GB"],
-    features: [
-      "Процессор Snapdragon 778G",
-      "120Гц AMOLED дисплей",
-      "Камера 108 МП",
-      "5000 мАч батарея",
-      "67W быстрая зарядка",
-      "NFC",
-    ],
-    specifications: {
-      Процессор: "Snapdragon 778G",
-      Дисплей: '6.67" AMOLED, 120Гц',
-      "Основная камера": "108 МП + 8 МП + 2 МП",
-      "Фронтальная камера": "16 МП",
-      Батарея: "5000 мАч",
-      Зарядка: "67W быстрая зарядка",
-      Память: "8GB RAM + 128/256GB ROM",
-      "Операционная система": "MIUI 14 на Android 13",
-      Вес: "181 г",
-      Размеры: "162.1 x 76.1 x 7.9 мм",
-    },
-  }
+  const axios = useAxios();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let data = await axios({ url: `product/${id}`, method: "GET" });
+        setProduct(data.data);
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const incrementQuantity = () => setQuantity(quantity + 1)
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
-    }
+    fetchData();
+  }, [id]);
+  console.log(product);
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -81,17 +86,15 @@ export default function ProductPage({ params }: ProductPageProps) {
               Главная
             </Link>
             <span className="mx-2">/</span>
-            <Link href="/category/smartphones" className="hover:text-orange-500 transition-colors">
-              Смартфоны
-            </Link>
+
             <span className="mx-2">/</span>
-            <span className="font-medium text-slate-700">{product.name}</span>
+            <span className="font-medium text-slate-700">{product?.title}</span>
           </div>
 
           {/* Back Button (Mobile) */}
           <div className="mb-4 md:hidden">
             <Link
-              href="/category/smartphones"
+              href="/"
               className="flex items-center text-sm text-orange-500 hover:text-orange-600 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
@@ -105,10 +108,12 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div>
               <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden mb-4">
                 <div className="relative h-[300px] sm:h-[400px] md:h-[500px] bg-slate-50">
-                  <Badge className="absolute top-4 left-4 z-10 bg-red-500 text-white">{product.discount}</Badge>
+                  <Badge className="absolute top-4 left-4 z-10 bg-red-500 text-white">
+                    {product?.price.discount}
+                  </Badge>
                   <Image
-                    src={product.images[activeImage] || "/placeholder.svg"}
-                    alt={product.name}
+                    src={product?.images[activeImage] || "/placeholder.svg"}
+                    alt={product?.title as string}
                     fill
                     className="object-contain p-8"
                   />
@@ -117,17 +122,19 @@ export default function ProductPage({ params }: ProductPageProps) {
 
               {/* Thumbnails */}
               <div className="grid grid-cols-4 gap-4">
-                {product.images.map((image, index) => (
+                {product?.images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
                     className={`relative h-20 bg-white rounded-lg border ${
-                      activeImage === index ? "border-orange-500" : "border-slate-200"
+                      activeImage === index
+                        ? "border-orange-500"
+                        : "border-slate-200"
                     } overflow-hidden`}
                   >
                     <Image
                       src={image || "/placeholder.svg"}
-                      alt={`${product.name} - изображение ${index + 1}`}
+                      alt={`${product.title} - изображение ${index + 1}`}
                       fill
                       className="object-contain p-2"
                     />
@@ -138,38 +145,35 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Product Info */}
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-slate-900 mb-2">
+                {product?.title}
+              </h1>
 
               {/* Rating */}
               <div className="flex items-center space-x-2 mb-4">
                 <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-slate-300"
-                      }`}
-                    />
-                  ))}
+                  <Rate disabled defaultValue={product?.rate} />
                 </div>
                 <span className="text-sm text-slate-600 font-medium">
-                  {product.rating} ({product.reviews} отзывов)
+                  {product?.rate}
                 </span>
               </div>
 
               {/* Price */}
               <div className="flex items-baseline space-x-3 mb-6">
-                <span className="text-3xl font-bold text-orange-500">{product.price}</span>
-                <span className="text-xl text-slate-400 line-through">{product.originalPrice}</span>
-                <Badge className="bg-green-100 text-green-800 border-green-200">Скидка {product.discount}</Badge>
+                <span className="text-3xl font-bold text-orange-500">
+                  {product?.price.current}
+                </span>
+                <span className="text-xl text-slate-400 line-through">
+                  {product?.price.old_price}
+                </span>
+                <Badge className="bg-green-100 text-green-800 border-green-200">
+                  Скидка {product?.price.discount}
+                </Badge>
               </div>
 
               {/* Short Description */}
-              <p className="text-slate-600 mb-6">{product.description}</p>
-
-           
-
-
+              <p className="text-slate-600 mb-6">{product?.description}</p>
 
               {/* Stock Status */}
               <div className="flex items-center space-x-2 mb-6">
@@ -177,18 +181,28 @@ export default function ProductPage({ params }: ProductPageProps) {
                   <Check className="h-5 w-5" />
                   <span>В наличии</span>
                 </div>
-                <span className="text-sm text-slate-500">• Доставка: 1-3 дня</span>
+                <span className="text-sm text-slate-500">
+                  • Доставка: 1-3 дня
+                </span>
               </div>
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button
-                  size="lg"
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                <Link
+                  target="_blank"
+                  href={
+                    (product?.uzum_link as string) ||
+                    "https://uzum.uz/uz/shop/autek"
+                  }
                 >
-                  <ShoppingCart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                 Купить в 1 клик
-                </Button>
+                  <Button
+                    size="lg"
+                    className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <ShoppingCart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Купить в 1 клик
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
                   size="lg"
@@ -198,29 +212,28 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Button>
               </div>
 
-              {/* Features */}
+              {/* Features
               <div className="bg-slate-50 rounded-xl p-4 mb-8">
-                <h3 className="font-medium text-slate-800 mb-3">Основные характеристики:</h3>
+                <h3 className="font-medium text-slate-800 mb-3">
+                  Основные характеристики:
+                </h3>
                 <ul className="space-y-2">
-                  {product.features.map((feature) => (
+                  {product?.images.map((feature) => (
                     <li key={feature} className="flex items-start">
                       <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                       <span className="text-slate-600">{feature}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
               {/* Share */}
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-slate-500">Поделиться:</span>
                 <div className="flex space-x-2">
-                    <button
-                      className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors"
-                    >
-                      <Share2 className="h-4 w-4 text-slate-600" />
-                    </button>
-                
+                  <button className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors">
+                    <Share2 className="h-4 w-4 text-slate-600" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -240,7 +253,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    {tab === "description" ? "Описание" : tab === "specifications" ? "Характеристики" : ""}
+                    {tab === "description" ? "Описание" : ""}
                   </button>
                 ))}
               </div>
@@ -249,43 +262,17 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="py-8">
               {activeTab === "description" && (
                 <div className="prose max-w-none">
-                  <p>
-                    POCO X5 Pro 5G - это мощный смартфон, который сочетает в себе высокую производительность, стильный
-                    дизайн и доступную цену. Благодаря процессору Snapdragon 778G, устройство обеспечивает плавную
-                    работу даже в самых требовательных приложениях и играх.
-                  </p>
-                  <p className="mt-4">
-                    6.67-дюймовый AMOLED дисплей с частотой обновления 120 Гц обеспечивает яркие цвета и плавную
-                    анимацию, делая использование смартфона комфортным в любых условиях. Основная камера на 108 МП
-                    позволяет делать детализированные фотографии даже при слабом освещении.
-                  </p>
-                  <p className="mt-4">
-                    Батарея емкостью 5000 мАч обеспечивает длительное время работы, а технология быстрой зарядки
-                    мощностью 67 Вт позволяет зарядить устройство до 50% всего за 15 минут.
-                  </p>
+                  <p>{product?.full_description}</p>
                 </div>
               )}
-
-              {activeTab === "specifications" && (
-                <div className="grid md:grid-cols-2 gap-8">
-                  {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="border-b border-slate-100 pb-4">
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">{key}</span>
-                        <span className="font-medium text-slate-900">{value}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-             
             </div>
           </div>
 
           {/* Related Products */}
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-slate-900 mb-8">Похожие товары</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-8">
+              Похожие товары
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[1, 2, 3, 4].map((item) => (
                 <div
@@ -301,7 +288,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-medium text-slate-900 line-clamp-1">Xiaomi Redmi Note 12</h3>
+                    <h3 className="font-medium text-slate-900 line-clamp-1">
+                      Xiaomi Redmi Note 12
+                    </h3>
                     <p className="text-sm text-slate-500 mt-1">от 19 990 ₽</p>
                   </div>
                 </div>
@@ -312,5 +301,5 @@ export default function ProductPage({ params }: ProductPageProps) {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

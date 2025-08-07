@@ -1,28 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef } from "react"
-import { motion } from "framer-motion"
-import { Upload, ImageIcon, Save, X } from "lucide-react"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/Badge"
-import Image from "next/image"
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Upload, ImageIcon, Save, X } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/Badge";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import { useAxios } from "@/hooks/useAxios";
 
 interface ShowcaseData {
-  id: number
-  main_text: string
-  tag_line: string
+  id: number;
+  main_text: string;
+  tag_line: string;
   price: {
-    current: number
-    old: number
-    discount: number
-  }
-  image: string
+    current: number;
+    old: number;
+    discount: number;
+  };
+  image: string;
+  uzum_link: string;
 }
 
 export function ShowcaseSection() {
+  const axios = useAxios();
+  const [loading ,setLoading] = useState<boolean>(true)
   const [showcaseData, setShowcaseData] = useState<ShowcaseData>({
     id: 1,
     main_text: "Matiz uchun monitor",
@@ -33,82 +38,125 @@ export function ShowcaseSection() {
       discount: 20,
     },
     image: "/placeholder.svg?height=400&width=400",
-  })
+    uzum_link: "https://uzum.uz/uz/shop/autek",
+  });
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [editData, setEditData] = useState<ShowcaseData>(showcaseData)
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string>("")
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const getOldShowcase = async () => {
+    let data = await axios({ url: "showcase", method: "GET" });
+    setShowcaseData(data?.data[0]);
+    console.log(data.data[0]);
+    
+    setLoading(false)
+  };
+
+  useEffect(() => {
+    getOldShowcase();
+  }, []);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState<ShowcaseData>(showcaseData);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      setSelectedImage(file)
-      const reader = new FileReader()
+      setSelectedImage(file);
+      const reader = new FileReader();
       reader.onload = (e) => {
-        setImagePreview(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleSave = async () => {
     try {
-      // Create FormData for image upload
-      const formData = new FormData()
+      const formData = new FormData();
+
+      // Ma'lumotlarni FormData ga qo‘shamiz
+      formData.append("id", editData.id.toString());
+      formData.append("main_text", editData.main_text);
+      formData.append("tag_line", editData.tag_line);
+      formData.append("current", editData.price.current.toString());
+      formData.append("old", editData.price.old.toString());
+      formData.append("discount", editData.price.discount.toString());
+      formData.append("uzum_link", editData.uzum_link); // agar bu mavjud bo‘lsa, qiymat ber
+
       if (selectedImage) {
-        formData.append("image", selectedImage)
+        formData.append("image", selectedImage);
       }
-      formData.append("data", JSON.stringify(editData))
 
-      // Here you would send to your backend
-      console.log("Saving showcase data:", editData)
-      console.log("Image file:", selectedImage)
+      const response = await fetch("http://localhost:3000/api/showcase", {
+        method: "PUT",
+        body: formData,
+      });
 
-      // Update local state
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Xatolik yuz berdi");
+      }
+
+      // Agar muvaffaqiyatli bo‘lsa, frontda holatni yangilaymiz
       setShowcaseData({
         ...editData,
         image: imagePreview || editData.image,
-      })
-      setIsEditing(false)
-      setSelectedImage(null)
-      setImagePreview("")
+      });
+      setIsEditing(false);
+      setSelectedImage(null);
+      setImagePreview("");
+      toast.success("Showcase muvaffaqiyatli yangilandi");
     } catch (error) {
-      console.error("Error saving showcase data:", error)
+      console.error("Xatolik:", error);
+      toast.error("Xatolik yuz berdi");
     }
-  }
+  };
 
   const handleCancel = () => {
-    setEditData(showcaseData)
-    setIsEditing(false)
-    setSelectedImage(null)
-    setImagePreview("")
-  }
+    setEditData(showcaseData);
+    setIsEditing(false);
+    setSelectedImage(null);
+    setImagePreview("");
+  };
 
-    
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Showcase Management</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">Manage your main showcase content</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            Showcase Management
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Manage your main showcase content
+          </p>
         </div>
         <div className="flex items-center space-x-3">
-          {isEditing ? (
+          {isEditing && !loading ? (
             <>
-              <Button variant="outline" onClick={handleCancel} className="bg-transparent">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                className="bg-transparent"
+              >
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave} className="bg-gradient-to-r from-green-500 to-green-600">
+              <Button
+                onClick={handleSave}
+                className="bg-gradient-to-r from-green-500 to-green-600"
+              >
                 <Save className="h-4 w-4 mr-2" />
                 Save Changes
               </Button>
             </>
           ) : (
-            <Button onClick={() => setIsEditing(true)} className="bg-gradient-to-r from-orange-500 to-orange-600">
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="bg-gradient-to-r from-orange-500 to-orange-600"
+            >
               Edit Showcase
             </Button>
           )}
@@ -123,7 +171,9 @@ export function ShowcaseSection() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-8"
         >
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">Current Showcase</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">
+            Current Showcase
+          </h2>
 
           <div className="space-y-6">
             {/* Image */}
@@ -134,23 +184,35 @@ export function ShowcaseSection() {
                 fill
                 className="object-contain p-4"
               />
-              <Badge className="absolute top-3 left-3 bg-red-500 text-white">-{showcaseData.price.discount}%</Badge>
+              <Badge className="absolute top-3 left-3 bg-red-500 text-white">
+                -{showcaseData?.price?.discount}%
+              </Badge>
             </div>
 
             {/* Content */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{showcaseData.main_text}</h3>
-                <p className="text-slate-600 dark:text-slate-400 mt-1">{showcaseData.tag_line}</p>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  {showcaseData.main_text}
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mt-1">
+                  {showcaseData.tag_line}
+                </p>
               </div>
 
               <div className="flex items-baseline space-x-3">
                 <span className="text-2xl font-bold text-orange-500">
                   {showcaseData.price.current.toLocaleString()} ₽
                 </span>
-                <span className="text-lg text-slate-400 line-through">{showcaseData.price.old.toLocaleString()} ₽</span>
+                <span className="text-lg text-slate-400 line-through">
+                  {showcaseData?.price?.old.toLocaleString()} ₽
+                </span>
                 <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  Save {(showcaseData.price.old - showcaseData.price.current).toLocaleString()} ₽
+                  Save{" "}
+                  {(
+                    showcaseData.price.old - showcaseData.price.current
+                  ).toLocaleString()}{" "}
+                  ₽
                 </Badge>
               </div>
             </div>
@@ -164,7 +226,9 @@ export function ShowcaseSection() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-8"
           >
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">Edit Showcase</h2>
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">
+              Edit Showcase
+            </h2>
 
             <div className="space-y-6">
               {/* Image Upload */}
@@ -176,12 +240,19 @@ export function ShowcaseSection() {
                   {/* Image Preview */}
                   <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden border-2 border-dashed border-slate-300 dark:border-slate-600">
                     {imagePreview || editData.image ? (
-                      <Image src={imagePreview || editData.image} alt="Preview" fill className="object-contain p-4" />
+                      <Image
+                        src={imagePreview || editData.image}
+                        alt="Preview"
+                        fill
+                        className="object-contain p-4"
+                      />
                     ) : (
                       <div className="flex items-center justify-center h-full">
                         <div className="text-center">
                           <ImageIcon className="h-12 w-12 text-slate-400 mx-auto mb-2" />
-                          <p className="text-slate-500 dark:text-slate-400">No image selected</p>
+                          <p className="text-slate-500 dark:text-slate-400">
+                            No image selected
+                          </p>
                         </div>
                       </div>
                     )}
@@ -210,10 +281,14 @@ export function ShowcaseSection() {
 
               {/* Main Text */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Main Text</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Main Text
+                </label>
                 <Input
                   value={editData.main_text}
-                  onChange={(e) => setEditData({ ...editData, main_text: e.target.value })}
+                  onChange={(e) =>
+                    setEditData({ ...editData, main_text: e.target.value })
+                  }
                   placeholder="Enter main text"
                   className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
                 />
@@ -221,10 +296,14 @@ export function ShowcaseSection() {
 
               {/* Tag Line */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tag Line</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Tag Line
+                </label>
                 <Input
                   value={editData.tag_line}
-                  onChange={(e) => setEditData({ ...editData, tag_line: e.target.value })}
+                  onChange={(e) =>
+                    setEditData({ ...editData, tag_line: e.target.value })
+                  }
                   placeholder="Enter tag line"
                   className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
                 />
@@ -242,7 +321,10 @@ export function ShowcaseSection() {
                     onChange={(e) =>
                       setEditData({
                         ...editData,
-                        price: { ...editData.price, current: Number(e.target.value) },
+                        price: {
+                          ...editData.price,
+                          current: Number(e.target.value),
+                        },
                       })
                     }
                     placeholder="Current price"
@@ -251,14 +333,19 @@ export function ShowcaseSection() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Old Price</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                    Old Price
+                  </label>
                   <Input
                     type="number"
                     value={editData.price.old}
                     onChange={(e) =>
                       setEditData({
                         ...editData,
-                        price: { ...editData.price, old: Number(e.target.value) },
+                        price: {
+                          ...editData.price,
+                          old: Number(e.target.value),
+                        },
                       })
                     }
                     placeholder="Old price"
@@ -276,7 +363,10 @@ export function ShowcaseSection() {
                     onChange={(e) =>
                       setEditData({
                         ...editData,
-                        price: { ...editData.price, discount: Number(e.target.value) },
+                        price: {
+                          ...editData.price,
+                          discount: Number(e.target.value),
+                        },
                       })
                     }
                     placeholder="Discount percentage"
@@ -287,10 +377,16 @@ export function ShowcaseSection() {
 
               {/* Price Preview */}
               <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4">
-                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Price Preview:</h4>
+                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Price Preview:
+                </h4>
                 <div className="flex items-baseline space-x-3">
-                  <span className="text-xl font-bold text-orange-500">{editData.price.current.toLocaleString()} ₽</span>
-                  <span className="text-sm text-slate-400 line-through">{editData.price.old.toLocaleString()} ₽</span>
+                  <span className="text-xl font-bold text-orange-500">
+                    {editData.price.current.toLocaleString()} ₽
+                  </span>
+                  <span className="text-sm text-slate-400 line-through">
+                    {editData.price.old.toLocaleString()} ₽
+                  </span>
                   <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                     -{editData.price.discount}%
                   </Badge>
@@ -301,5 +397,5 @@ export function ShowcaseSection() {
         )}
       </div>
     </div>
-  )
+  );
 }

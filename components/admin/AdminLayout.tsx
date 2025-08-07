@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+  import { ToastContainer,  } from 'react-toastify';
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -120,7 +121,7 @@ export function AdminLayout({ children, activeSection, setActiveSection }: Admin
               <span className="text-white font-bold text-sm">A</span>
             </div>
             <h1 className="text-lg font-bold text-slate-900 dark:text-white">
-              AL<span className="text-orange-500">TEK</span> Admin
+              AU<span className="text-orange-500">TEK</span> Admin
             </h1>
           </div>
 
@@ -212,6 +213,7 @@ export function AdminLayout({ children, activeSection, setActiveSection }: Admin
           <div className="p-4 md:p-8">{children}</div>
         </main>
       </div>
+      <ToastContainer/>
     </div>
   )
 }
