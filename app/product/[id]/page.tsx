@@ -17,6 +17,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAxios } from "@/hooks/useAxios";
 import { Rate } from 'antd';
+import { log } from "console";
 
 
 interface ProductPageProps {
@@ -77,6 +78,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const fetchRelated = async () => {
     try {
       const res = await axios({ url: "popular-prod", method: "GET" })
+      console.log(res);
       setRelatedProducts(res.data) // backendda `data.data` bo‘lishi mumkin
     } catch (err) {
       console.error("Error fetching related products:", err)
