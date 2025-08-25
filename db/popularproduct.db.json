@@ -2,50 +2,41 @@
   {
     "id": 102,
     "discount": 0,
-    "rate": 0,
-    "title": "O'tkan kunlar",
-    "description": "",
-    "price": 0,
-    "image": "/uploads/a82e8c07-1fa3-40ba-aee3-50b912f93301.png",
-    "uzum_link": "https://uzum.uz/uz/product/qochqorbek"
-  },
-  {
-    "id": 103,
-    "discount": 30,
-    "rate": 4.8,
-    "title": "Dell XPS 13",
-    "description": "Yuqori unumdorlikdagi ultrabook — ish va o‘qish uchun ideal",
-    "price": 1200,
-    "image": "/uploads/dell_xps_13.png",
-    "uzum_link": "https://uzum.uz/uz/product/dell-xps-13"
+    "rate": 5,
+    "title": "Avto monitor Tesla, 4+64GB WiFii kuler",
+    "description": "Operativniy va doimiy xotira proshivka qilingan: 2/32 GB --> 4/64 GB .Kuchli 4 yadroli protsessor va sovutish kuleri ravon ishlashni va ilovalarning tezkor ishlashini ta'minlaydi",
+    "price": 911040,
+    "image": "/uploads/monitor-matiz.png",
+    "uzum_link": "https://uzum.uz/uz/product/avto-monitor-tesla-1486064?skuId=5649358"
   },
   {
     "id": 104,
-    "discount": 25,
+    "discount": 2121,
     "rate": 4.5,
-    "title": "Canon EOS M50 Mark II",
-    "description": "Vlog va fotografiya uchun mukammal kamera",
-    "price": 700,
-    "image": "/uploads/canon_m50.png",
-    "uzum_link": "https://uzum.uz/uz/product/canon-eos-m50-mark-ii"
-  },
-  {
-    "id": 1753931142150,
-    "title": "qo'chqor",
-    "description": "Qo'ziyev",
-    "price": null,
-    "rate": 9999999,
-    "discount": 1.2,
-    "image": "/uploads/7e9d4636-b36d-41a0-b46b-ed459be8c1f5.webp",
-    "uzum_link": "https://uzum.uz/uz/product/qochqor"
+    "title": "Avto monitor Tesla / Diamond X80 2K,",
+    "description": "Diamond X80 2K, 11.8 dyum 4+64GB WiFi kuler, ramka va simlari bilan",
+    "price": 1305600,
+    "image": "/uploads/auto-monitor2.png",
+    "uzum_link": "https://uzum.uz/uz/product/avto-monitor-tesla-alvon---266-1675859?skuId=5688055"
   },
   {
     "id": 1754535292444,
-    "title": "asdasda",
-    "description": "csdcscsdcscscs",
-    "price": 323,
-    "rate": 3,
+    "title": "Videoregistrator ikkita kanalli 4K+1080p",
+    "description": "AUTEK M1, 10dyum touch sensor ekran, Wi-Fi modul",
+    "price": 671040,
+    "rate": 5,
     "discount": 3232,
-    "image": "/uploads/d049d80d-8e92-4f60-ae15-390bccfaebe4.png"
+    "image": "/uploads/auto-camera-2.png",
+    "uzum_link": "https://uzum.uz/uz/product/videoregistrator-ikkita-kanalli-1644390?skuId=5527472"
+
+  },
+  {
+    "id": 1755863119871,
+    "title": "Orqa avtomobil kamera",
+    "description": "Orqa avtomobil kamera — haydashni yanada xavfsiz va qulay qiladi. Parkovka paytida orqa tarafni aniq ko‘rsatadi, kutilmagan holatlarning oldini oladi. Har qanday avtomobilga o‘rnatish mumkin, yuqori sifatli tasvir va keng burchakli ko‘rish imkoniyati bilan jihozlangan.",
+    "price": 93060,
+    "rate": 4.7,
+    "discount": 21,
+   "image": "/uploads/auto-camera-3.png"
   }
 ]

@@ -37,7 +37,7 @@ export function BackToTop() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 left-6 w-12 h-12 bg-white border-2 border-slate-200 rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-orange-500 hover:border-orange-200 transition-colors z-40"
+          className="fixed bottom-6 right-6 w-12 h-12 bg-white border-2 border-slate-200 rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-orange-500 hover:border-orange-200 transition-colors z-40"
         >
           <ArrowUp className="h-5 w-5" />
         </motion.button>

@@ -23,7 +23,6 @@ export function CategorySection() {
 
   const getAllCategory = async () => {
     let data = await axios({url:"category" , method:"GET"})
-    console.log(data.data)
     setCategories(data.data)
 
   }

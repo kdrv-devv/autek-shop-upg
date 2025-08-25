@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, TrendingUp, Clock } from "lucide-react"
+import { Search, TrendingUp } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useAxios } from "@/hooks/useAxios"
 

@@ -4,9 +4,8 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
 
-export function ProductCard3D({ img , title , loading } : {img:any , title:any , loading:any}) {
+export function ProductCard3D({ img , title } : {img:any , title:any , loading:any}) {
   const [isHovered, setIsHovered] = useState(false)
-  console.log(img , title);
   
 
   return (

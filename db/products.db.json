@@ -1,165 +1,47 @@
 [
   {
     "id": 1,
-    "title": "Vertu old is gold Pro",
+    "title": "Avto monitor Tesla, 4+64GB WiFii kuler",
     "rate": 4.8,
     "price": {
-      "current": 220,
-      "old_price": 270,
+      "current": 911040,
+      "old_price": 1211240,
       "discount": 18
     },
-    "description": "Very beatiful phone",
-    "full_description": "Vertu old is gold Pro — hashamat va texnologiyani birlashtirgan premium darajadagi telefon. Uning nafis dizayni va ishonchli funksionalligi uni klassik telefon ixlosmandlari uchun ideal tanlovga aylantiradi.",
-    "uzum_link": "https://uzum.uz/product/vertu",
-    "images": [
-      "/uploads/airpods1.png",
-      "/uploads/airpods2.png",
-      "/uploads/airpods3.png"
-    ],
-    "category": "phones"
+    "description": "Operativniy va doimiy xotira proshivka qilingan: 2/32 GB --> 4/64 GBKuchli 4 yadroli protsessor va sovutish kuleri ravon ishlashni va ilovalarning tezkor ishlashini ta'minlaydi",
+    "full_description": "Android operatsion tizimida ishlaydigan 4 Gb tezkor va 64 Gb ichki xotiraga ega Android avtomobil monitori Tesla 9\" / 10.2\" dyumli ekranga ega Wi-Fi ulanib internetga chiqa oladi, to'plamda ramka, barcha o'rnatish uchun kerakli shtekеrlar, kullerga ega, avtomobil modeliga qarab CANBUS* (shu narsa ham tovar narxini oshiradi) ham qo'shilgan to'plamga *CANBUS - avtomobil elektronikasining zarur elementi bo'lib, u Android monitorning avtomobil bort (komptyuter) tizimi bilan eng samarali o'zaro ta'sirini ta'minlaydi. Spark (Avtomat) va Cobaltga CANBUS Android monitor bilan birga o'rnatilganda ekranida quyidagi ma'lumotlarni ko'rsatishga imkon beradi: - agar eshiklar ochiq bo'lsa ochilib turgan holatini ko'rsatadi, - Burilish signali (povorotnik)ni yoqilgan paytda CANBUS to'plamidagi karnay ham chiqillab hadoychiga burilish signali yonib turgani haqida tovushli signal chiqaradi,",
+    "uzum_link": "https://uzum.uz/uz/product/avto-monitor-tesla-1486064?skuId=5649358",
+    "image": "/uploads/matiz-monitor-1.png",
+    "category": "Auto monitorlar"
   },
   {
     "id": 4,
-    "title": "Xiaomi Mi Band 8",
+    "title": "Avto monitor Tesla / Diamond X80 2K",
     "rate": 4.5,
     "price": {
-      "current": 45,
-      "old_price": 60,
+      "current": 1305600,
+      "old_price": 1505600,
       "discount": 25
     },
-    "description": "OLED ekran, yurak urishi nazorati va 20 dan ortiq sport rejimi",
-    "full_description": "Xiaomi Mi Band 8 — sog‘lom turmush tarzini kuzatuvchilar uchun zamonaviy fitnes treker. OLED ekrani bilan barcha bildirishnomalarni oson ko‘rish mumkin, yurak urishi nazorati, uyqu monitoringi va sport rejimlari bilan siz har doim formadasiz.",
-    "uzum_link": "https://uzum.uz/product/mi-band-8",
-    "images": [
-      "/uploads/miband1.png",
-      "/uploads/miband2.png",
-      "/uploads/miband3.png"
-    ],
-    "category": "smart-devices"
+    "description": "11.8 dyum 4+64GB WiFi kuler, ramka va simlari bilan",
+    "full_description": "Avto monitor Tesla / Diamond X80 2K, 11.8\" dyum, 4+64GB, WiFi, ramka va simlari bilan To'plamda Diamond X80 4+64 GB Android avto monitor va aksesuar shtekr bor (platmassa ramka bu 9 dyumlini monitor korpusini 10.2 dyumli monitor korpus tushadigan adapter ramkaga qotirish uchun, GPS antenna, RCA kabel, 2ta USB port kabeli, orqa kamera uchun kabel bor) va siz tanlagan avtomobil uchun adapter ramka va quvvat simi va radio antennaga adapter (nexia 1, nexia 2, matiz, damas uchun to'plamga qo'shilmagan chunki bu avtomobillari o'zini radio antenna simi monitorga ulanadi), agar universal tanlasangiz adapter ramka va  radio antennaga adapter to'plamda bo'lmaydi. Avtomobil modeliga qarab CANBUS* (shu narsa ham tovar narxini oshiradi) ham qo'shilgan to'plamga.",
+    "uzum_link": "https://uzum.uz/uz/product/avto-monitor-tesla-alvon---266-1675859?skuId=5688055",
+    "image": "/uploads/auto-monitor-3.png",
+    "category": "Auto monitorlar"
   },
   {
-    "id": 5,
-    "title": "JBL Flip 6",
-    "rate": 4.7,
+    "id": 1756115404382,
+    "title": "Avto monitor Tesla, AUTEK N10",
+    "rate": 4,
     "price": {
-      "current": 110,
-      "old_price": 150,
-      "discount": 26
+      "current": 1055000,
+      "old_price": 1255000,
+      "discount": 2
     },
-    "description": "Portativ Bluetooth speaker suv o‘tkazmaydi va kuchli basga ega",
-    "full_description": "JBL Flip 6 — o‘zining kuchli ovoz sifati va suvga chidamliligi bilan mashhur portativ dinamik. Uzoq batareya muddati va kuchli bas bilan sizga istalgan joyda musiqa zavqini taqdim etadi.",
-    "uzum_link": "https://uzum.uz/product/jbl-flip-6",
-    "images": ["/uploads/jbl1.png", "/uploads/jbl2.png", "/uploads/jbl3.png"],
-    "category": "audio"
-  },
-  {
-    "id": 6,
-    "title": "Sony WH-1000XM5",
-    "rate": 4.9,
-    "price": {
-      "current": 320,
-      "old_price": 400,
-      "discount": 20
-    },
-    "description": "Dunyodagi eng yaxshi noise cancelling naushniklaridan biri",
-    "full_description": "Sony WH-1000XM5 — professional darajadagi ovoz sifati va ilg‘or shovqinni bekor qilish texnologiyasi bilan jihozlangan naushnik. Uzoq ishlash muddati va qulay dizayni bilan kundalik foydalanishda ideal tanlov.",
-    "uzum_link": "https://uzum.uz/product/sony-wh1000xm5",
-    "images": [
-      "/uploads/sony1.png",
-      "/uploads/sony2.png",
-      "/uploads/sony3.png"
-    ],
-    "category": "audio"
-  },
-  {
-    "id": 7,
-    "title": "Logitech MX Master 3",
-    "rate": 4.8,
-    "price": {
-      "current": 99,
-      "old_price": 130,
-      "discount": 24
-    },
-    "description": "Productivity uchun eng zo‘r sichqoncha, USB-C va Bluetooth qo‘llab-quvvatlaydi",
-    "full_description": "Logitech MX Master 3 — professionallar uchun mo‘ljallangan sichqoncha bo‘lib, ergonomik dizayni va ko‘p funksionalligi bilan mashhur. USB-C zaryadlash va Bluetooth bilan mosligi orqali har qanday qurilmada samarali ishlash imkonini beradi.",
-    "uzum_link": "https://uzum.uz/product/logitech-mx-master-3",
-    "images": ["/uploads/mx1.png", "/uploads/mx2.png", "/uploads/mx3.png"],
-    "category": "accessories"
-  },
-  {
-    "id": 8,
-    "title": "Amazon Kindle Paperwhite",
-    "rate": 4.6,
-    "price": {
-      "current": 140,
-      "old_price": 170,
-      "discount": 17
-    },
-    "description": "E-ink ekran, oson o‘qish va uzoq batareya quvvati",
-    "full_description": "Amazon Kindle Paperwhite — kitobxonlar uchun ideal elektron kitob o‘qish qurilmasi. E-ink texnologiyasi bilan ko‘zlarni charchatmaydi va bir martalik zaryad bilan haftalab foydalanish mumkin.",
-    "uzum_link": "https://uzum.uz/product/kindle-paperwhite",
-    "images": [
-      "/uploads/kindle1.png",
-      "/uploads/kindle2.png",
-      "/uploads/kindle3.png"
-    ],
-    "category": "reading-devices"
-  },
-  {
-    "id": 9,
-    "title": "Anker PowerCore 20000mAh",
-    "rate": 4.7,
-    "price": {
-      "current": 55,
-      "old_price": 70,
-      "discount": 21
-    },
-    "description": "Ikkita USB portli kuchli powerbank, tez zaryadlash imkoniyati",
-    "full_description": "Anker PowerCore 20000mAh — uzoq safarlar uchun ideal powerbank. Ikkita USB port va tez zaryadlash texnologiyasi bilan qurilmalaringiz har doim faol holatda qoladi.",
-    "uzum_link": "https://uzum.uz/product/anker-powercore-20000",
-    "images": [
-      "/uploads/anker1.png",
-      "/uploads/anker2.png",
-      "/uploads/anker3.png"
-    ],
-    "category": "power"
-  },
-  {
-    "id": 10,
-    "title": "Philips OneBlade Pro",
-    "rate": 4.4,
-    "price": {
-      "current": 65,
-      "old_price": 90,
-      "discount": 28
-    },
-    "description": "Soqol olish va shakllantirish uchun zamonaviy trimmer",
-    "full_description": "Philips OneBlade Pro — soqol olish va uni aniq shakllantirish uchun mo‘ljallangan ilg‘or trimmer. Uzunlik sozlamalari va uzoq ishlash muddati bilan professional natijalarni kafolatlaydi.",
-    "uzum_link": "https://uzum.uz/product/philips-oneblade",
-    "images": [
-      "/uploads/oneblade1.png",
-      "/uploads/oneblade2.png",
-      "/uploads/oneblade3.png"
-    ],
-    "category": "personal-care"
-  },
-  {
-    "id": 1753862577188,
-    "title": "panda",
-    "rate": 4.3,
-    "price": {
-      "current": 0,
-      "old_price": 0,
-      "discount": 0
-    },
-    "description": "Very beautiful phone\n",
-    "full_description": "Panda — nafis va jozibali dizaynga ega telefon bo‘lib, foydalanishda estetik zavq beradi. Minimalistik ko‘rinish, zamonaviy funksiyalar bilan uyg‘unlashgan.",
-    "uzum_link": "https://uzum.uz/product/vertu",
-    "images": [
-      "/uploads/404f95b9-862f-42b6-8c23-7dd08565c302.png",
-      "/uploads/f73aa12c-d3e0-47fd-9623-a1c66ca5ac6a.png",
-      "/uploads/5ea69ed1-b185-46d9-bfe5-9ca1c5160fbc.jpg"
-    ],
-    "category": "phones"
+    "description": "9/10.2\" 4+64GB WiFi kuler, simlari va ramka yoki ramkasiz",
+    "full_description": "Avto monitor Tesla, AUTEK N10, 4+64GB WiFi Kuler,simlari va ramka bilan yoki ramkasiz\r\n\r\nAndroid operatsion tizimida ishlaydigan 4 Gb tezkor va 64 Gb ichki xotiraga ega Android avtomobil monitori Tesla 9\" / 10.2\" dyumli ekranga ega Wi-Fi ulanib internetga chiqa oladi, to'plamda ramka, barcha o'rnatish uchun kerakli shtekеrlar, kullerga ega, avtomobil modeliga qarab CANBUS* (shu narsa ham tovar narxini oshiradi) ham qo'shilgan to'plamga\r\n\r\n*CANBUS - avtomobil elektronikasining zarur elementi bo'lib, u Android monitorning avtomobil bort (komptyuter) tizimi bilan eng samarali o'zaro ta'sirini ta'minlaydi.",
+    "uzum_link": "https://uzum.uz/uz/product/avto-monitor-tesla-sargish---11-1644550?skuId=5528607",
+    "image": "/uploads/cbf7ae3e-73be-44c8-95fd-c41e13353805.jpg",
+    "category": "Auto monitorlar"
   }
 ]

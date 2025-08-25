@@ -22,6 +22,7 @@ interface ShowcaseDataType {
   main_text: string;
   price: Price;
   tag_line: string;
+  uzum_link:string
 }
 
 export function HeroSection() {
@@ -119,10 +120,10 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row sm:items-baseline space-y-2 sm:space-y-0 sm:space-x-4"
             >
               <span className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
-                {data?.price.current} uzs
+                {data?.price.current.toLocaleString('en-US')} so'm
               </span>
               <span className="text-lg sm:text-xl lg:text-2xl text-slate-400 line-through">
-                {data?.price.old}
+                {data?.price.old.toLocaleString('en-US')} so'm
               </span>
               <Badge className="bg-green-100 text-green-800 border-green-200 w-fit">
                 {data?.price.discount}%
@@ -136,7 +137,7 @@ export function HeroSection() {
               transition={{ delay: 0.7 }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full"
             >
-              <Link target="_blank" href={"https://uzum.uz/uz/shop/autek"}>
+              <Link target="_blank" href={data?.uzum_link as string || "https://uzum.uz/uz/shop/autek" }>
                 <Button
                   size="lg"
                   className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
@@ -147,6 +148,7 @@ export function HeroSection() {
               </Link>
 
               <Button
+                onClick={() => window.location.href ="https://uzum.uz/uz/product/simli-simsiz-akkumulyator-1737463?skuId=5971101"}
                 variant="outline"
                 size="lg"
                 className="w-full sm:w-auto border-2 border-slate-300 hover:border-orange-500 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold bg-white/50 backdrop-blur-sm hover:bg-orange-50 transition-all duration-300 group"

@@ -2,20 +2,17 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Search, ShoppingCart, Menu, Heart, Bell } from "lucide-react"
+import { Search, Menu } from "lucide-react"
 import { Button } from "@/components/ui/Button"
-import { Badge } from "@/components/ui/Badge"
 import { NavigationMenu } from "@/components/ui/NavigationMenu"
-import { UserMenu } from "@/components/ui/UserMenu"
 import { SearchModal } from "@/components/ui/SearchModal"
 import { MobileMenu } from "@/components/ui/MobileMenu"
-import { useCart } from "@/hooks/useCart"
 import { useScrollDirection } from "@/hooks/useScrollDirection"
+import Link from "next/link"
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { items } = useCart()
   const scrollDirection = useScrollDirection()
 
   return (
@@ -33,9 +30,9 @@ export function Header() {
             {/* Logo */}
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-2">
              
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+              <Link href={"/"} className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
                 AU<span className="text-orange-500">TEK</span>
-              </h1>
+              </Link>
             </motion.div>
 
             {/* Desktop Navigation */}

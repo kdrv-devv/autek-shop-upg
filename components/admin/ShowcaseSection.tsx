@@ -27,15 +27,15 @@ interface ShowcaseData {
 
 export function ShowcaseSection() {
   const axios = useAxios();
-  const [loading ,setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
   const [showcaseData, setShowcaseData] = useState<ShowcaseData>({
     id: 1,
-    main_text: "Matiz uchun monitor",
-    tag_line: "Plastic mustahkam maxsulot",
+    main_text: "",
+    tag_line: "",
     price: {
-      current: 120000,
-      old: 150000,
-      discount: 20,
+      current: 0,
+      old: 0,
+      discount: 0,
     },
     image: "/placeholder.svg?height=400&width=400",
     uzum_link: "https://uzum.uz/uz/shop/autek",
@@ -44,9 +44,7 @@ export function ShowcaseSection() {
   const getOldShowcase = async () => {
     let data = await axios({ url: "showcase", method: "GET" });
     setShowcaseData(data?.data[0]);
-    console.log(data.data[0]);
-    
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -75,14 +73,13 @@ export function ShowcaseSection() {
     try {
       const formData = new FormData();
 
-      // Ma'lumotlarni FormData ga qo‘shamiz
       formData.append("id", editData.id.toString());
       formData.append("main_text", editData.main_text);
       formData.append("tag_line", editData.tag_line);
       formData.append("current", editData.price.current.toString());
       formData.append("old", editData.price.old.toString());
       formData.append("discount", editData.price.discount.toString());
-      formData.append("uzum_link", editData.uzum_link); // agar bu mavjud bo‘lsa, qiymat ber
+      formData.append("uzum_link", editData.uzum_link);
 
       if (selectedImage) {
         formData.append("image", selectedImage);
@@ -99,7 +96,6 @@ export function ShowcaseSection() {
         throw new Error(result.message || "Xatolik yuz berdi");
       }
 
-      // Agar muvaffaqiyatli bo‘lsa, frontda holatni yangilaymiz
       setShowcaseData({
         ...editData,
         image: imagePreview || editData.image,
@@ -154,7 +150,9 @@ export function ShowcaseSection() {
             </>
           ) : (
             <Button
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                setEditData(showcaseData)
+                setIsEditing(true)}}
               className="bg-gradient-to-r from-orange-500 to-orange-600"
             >
               Edit Showcase
@@ -176,7 +174,6 @@ export function ShowcaseSection() {
           </h2>
 
           <div className="space-y-6">
-            {/* Image */}
             <div className="relative h-64 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden">
               <Image
                 src={showcaseData.image || "/placeholder.svg"}
@@ -189,7 +186,6 @@ export function ShowcaseSection() {
               </Badge>
             </div>
 
-            {/* Content */}
             <div className="space-y-4">
               <div>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -202,19 +198,31 @@ export function ShowcaseSection() {
 
               <div className="flex items-baseline space-x-3">
                 <span className="text-2xl font-bold text-orange-500">
-                  {showcaseData.price.current.toLocaleString()} ₽
+                  {showcaseData.price.current.toLocaleString()} so'm
                 </span>
                 <span className="text-lg text-slate-400 line-through">
-                  {showcaseData?.price?.old.toLocaleString()} ₽
+                  {showcaseData?.price?.old.toLocaleString()} so'm
                 </span>
                 <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                   Save{" "}
                   {(
                     showcaseData.price.old - showcaseData.price.current
                   ).toLocaleString()}{" "}
-                  ₽
+                  so'm
                 </Badge>
               </div>
+
+              {/* Uzum link preview */}
+              {showcaseData.uzum_link && (
+                <a
+                  href={showcaseData.uzum_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline text-sm"
+                >
+                  View on Uzum
+                </a>
+              )}
             </div>
           </div>
         </motion.div>
@@ -237,7 +245,6 @@ export function ShowcaseSection() {
                   Product Image
                 </label>
                 <div className="space-y-4">
-                  {/* Image Preview */}
                   <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden border-2 border-dashed border-slate-300 dark:border-slate-600">
                     {imagePreview || editData.image ? (
                       <Image
@@ -258,7 +265,6 @@ export function ShowcaseSection() {
                     )}
                   </div>
 
-                  {/* Upload Button */}
                   <div className="flex items-center justify-center">
                     <Button
                       variant="outline"
@@ -305,6 +311,21 @@ export function ShowcaseSection() {
                     setEditData({ ...editData, tag_line: e.target.value })
                   }
                   placeholder="Enter tag line"
+                  className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                />
+              </div>
+
+              {/* Uzum Link */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Uzum Link
+                </label>
+                <Input
+                  value={editData.uzum_link}
+                  onChange={(e) =>
+                    setEditData({ ...editData, uzum_link: e.target.value })
+                  }
+                  placeholder="https://uzum.uz/product/..."
                   className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
                 />
               </div>
@@ -382,10 +403,10 @@ export function ShowcaseSection() {
                 </h4>
                 <div className="flex items-baseline space-x-3">
                   <span className="text-xl font-bold text-orange-500">
-                    {editData.price.current.toLocaleString()} ₽
+                    {editData.price.current.toLocaleString()} so'm
                   </span>
                   <span className="text-sm text-slate-400 line-through">
-                    {editData.price.old.toLocaleString()} ₽
+                    {editData.price.old.toLocaleString()} so'm
                   </span>
                   <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                     -{editData.price.discount}%

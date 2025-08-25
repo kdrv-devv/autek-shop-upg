@@ -11,7 +11,6 @@ import { CategoriesSection } from "@/components/sections/CategoriesSection"
 import { FeaturedProducts } from "@/components/sections/FeaturedProducts"
 import { NewsletterSection } from "@/components/sections/NewsletterSection"
 import { Footer } from "@/components/layout/Footer"
-import { FloatingCart } from "@/components/ui/FloatingCart"
 import { BackToTop } from "@/components/ui/BackToTop"
 
 
@@ -19,7 +18,6 @@ export default function HomePage() {
 
   const [searchQuery, setSearchQuery] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
-  const [cartCount] = useState(3)
   
 
   
@@ -39,7 +37,6 @@ export default function HomePage() {
         <NewsletterSection />
       </main>
       <Footer />
-      <FloatingCart cartCount={cartCount} />
       <BackToTop />
     </div>
   )

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import {  ShoppingCart, Heart, Eye } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { Rate } from 'antd';
 
 interface Product {
   id: number;
-  name: string;
+  title: string;
   description: string;
   price: string;
   originalPrice: string;
@@ -73,13 +73,13 @@ export function FeaturedProducts() {
               onClick={() => window.open(product.uzum_link, "_blank")}
               className="group cursor-pointer"
             >
-              <div className="bg-white rounded-3xl h-[580px] shadow-xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
+              <div className="bg-white rounded-3xl h-[680px] shadow-xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
                 {/* Product Image Section */}
                 <div className="relative h-80 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
                   {/* Discount Badge */}
                   <div className="absolute top-4 left-4 z-10">
                     <Badge className="bg-red-500 text-white px-3 py-1 text-sm font-bold">
-                      -22%
+                      -12%
                     </Badge>
                   </div>
 
@@ -109,7 +109,7 @@ export function FeaturedProducts() {
                   >
                     <Image
                       src={product.image || "/placeholder.svg"}
-                      alt={product.name}
+                      alt={product.title}
                       width={300}
                       height={300}
                       className="object-contain max-w-full max-h-full drop-shadow-2xl"
@@ -121,7 +121,7 @@ export function FeaturedProducts() {
                 </div>
 
                 {/* Product Info Section */}
-                <div className="p-8">
+                <div className="p-8  h-[350px] !flex !flex-col !justify-between">
                   {/* Rating */}
                   <div className="flex items-start space-x-2 mb-4">
                     <div className="flex items-center">
@@ -134,7 +134,7 @@ export function FeaturedProducts() {
 
                   {/* Product Name */}
                   <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors">
-                    {product.name}
+                    {product.title}
                   </h3>
 
                   {/* Description */}
@@ -143,30 +143,20 @@ export function FeaturedProducts() {
                   </p>
 
                   {/* Features */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {["5G", "128GB", "50MP"].map((feature) => (
-                      <span
-                        key={feature}
-                        className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium"
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-
+                 
                   {/* Price and Action */}
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-3">
                         <span className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
-                          {product.price}
+                          {product.price.toLocaleString()} so'm
                         </span>
                         <span className="text-lg text-slate-400 line-through">
-                          {product.originalPrice}
+                          {+product.price + 100000} so'm
                         </span>
                       </div>
                       <p className="text-sm text-slate-500">
-                        или от 2,330 ₽/мес
+                        или от { (+product.price / 12).toString().toLocaleString()} so'm/oy
                       </p>
                     </div>
 
@@ -175,6 +165,7 @@ export function FeaturedProducts() {
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button
+                        onClick={()=> window.open(product.uzum_link, "_blank")}
                         size="lg"
                         className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
                       >

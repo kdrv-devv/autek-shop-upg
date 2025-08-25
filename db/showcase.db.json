@@ -1,14 +1,14 @@
 [
   {
     "id": 1,
-    "main_text": "Matiz uchun monitor",
-    "tag_line": "Plastic mustahkam maxsulot",
+    "main_text": "Simsiz akkumulyator Powerbank Magsafe, MagCharger",
+    "tag_line": "Simli , MagCharger 15 Vt/20 Vt, 10000 mА/s",
     "price": {
-      "current": 120000,
-      "old": 150000,
-      "discount": 20
+      "current": 235060,
+      "old": 350000,
+      "discount": 12
     },
-    "image": "/uploads/3c9c88fc-ceb5-48ea-a3bd-818cb9b971b4.webp",
-    "uzum_link": "https://uzum.uz/uz/shop/autek"
+    "image": "/uploads/showcase-1.png",
+    "uzum_link": "https://uzum.uz/uz/product/simli-simsiz-akkumulyator-1737463?skuId=5971101"
   }
 ]

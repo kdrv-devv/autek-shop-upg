@@ -14,11 +14,10 @@ function withCORS(res: NextResponse) {
   return res;
 }
 
-// ✅ GET – barcha category yoki ma'lum bir category bo'yicha productlar
+//  GET – barcha category yoki ma'lum bir category bo'yicha productlar
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const categoryTitle = searchParams.get("title");
-    console.log(categoryTitle);
     
   try {
     if (categoryTitle) {
@@ -110,7 +109,7 @@ export async function PUT(req: Request) {
 }
 
 
-// ✅ DELETE – id orqali o‘chirish
+//  DELETE – id orqali o‘chirish
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = parseInt(searchParams.get("id") || "0");
@@ -142,7 +141,7 @@ export async function DELETE(req: Request) {
   }
 }
 
-// ✅ OPTIONS
+//  OPTIONS
 export async function OPTIONS() {
   return withCORS(new NextResponse(null, { status: 204 }));
 }

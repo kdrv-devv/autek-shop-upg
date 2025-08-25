@@ -1,88 +1,96 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Plus, Edit, Trash2, Upload, X, Save, Search } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/Badge"
 import Image from "next/image"
+import { toast } from "react-toastify"
+import { useAxios } from "@/hooks/useAxios"
 
 interface Product {
   id: number
   title: string
   category: string
+  rate: number
   price: {
     current: number
-    old: number
+    old_price: number
     discount: number
   }
   description: string
-  stock: number
-  status: "active" | "inactive"
+  full_description: string
+  uzum_link: string
+  image: string
+}
+
+interface Category {
+  id: number
+  title: string
   image: string
 }
 
 export function ProductsSection() {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      title: "iPhone 15 Pro Max",
-      category: "Smartphones",
-      price: { current: 89990, old: 99990, discount: 10 },
-      description: "Latest iPhone with A17 Pro chip",
-      stock: 25,
-      status: "active",
-      image: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 2,
-      title: "MacBook Air M3",
-      category: "Laptops",
-      price: { current: 129990, old: 149990, discount: 13 },
-      description: "Powerful laptop with M3 chip",
-      stock: 15,
-      status: "active",
-      image: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 3,
-      title: "iPad Pro 12.9",
-      category: "Tablets",
-      price: { current: 79990, old: 89990, discount: 11 },
-      description: "Professional tablet for creative work",
-      stock: 0,
-      status: "inactive",
-      image: "/placeholder.svg?height=100&width=100",
-    },
-  ])
+  const axios = useAxios()
+  const [products, setProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
+
   const [formData, setFormData] = useState<Omit<Product, "id">>({
     title: "",
     category: "",
-    price: { current: 0, old: 0, discount: 0 },
+    rate: 0,
+    price: { current: 0, old_price: 0, discount: 0 },
     description: "",
-    stock: 0,
-    status: "active",
+    full_description: "",
+    uzum_link: "",
     image: "",
   })
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState("")
 
-  const categories = ["all", "Smartphones", "Laptops", "Tablets", "Accessories"]
+  // Fetch products
+  const getProducts = async () => {
+    try {
+      const res = await axios({ url: "product", method: "GET" })
+      setProducts(res.data)
+    } catch (error) {
+      toast.error("Failed to fetch products")
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  // Fetch categories
+  const getCategories = async () => {
+    try {
+      const res = await axios({ url: "category", method: "GET" })
+      setCategories(res.data)
+    } catch (error) {
+      toast.error("Failed to fetch categories")
+    }
+  }
+
+  useEffect(() => {
+    getProducts()
+    getCategories()
+  }, [])
+
+  // Filter
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
+  // Image select
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -95,35 +103,49 @@ export function ProductsSection() {
     }
   }
 
+  // Save Product
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
       const formDataToSend = new FormData()
+      formDataToSend.append("title", formData.title)
+      formDataToSend.append("category", formData.category)
+      formDataToSend.append("rate", String(formData.rate))
+      formDataToSend.append("current", String(formData.price.current))
+      formDataToSend.append("old_price", String(formData.price.old_price))
+      formDataToSend.append("discount", String(formData.price.discount))
+      formDataToSend.append("description", formData.description)
+      formDataToSend.append("full_description", formData.full_description)
+      formDataToSend.append("uzum_link", formData.uzum_link)
+
       if (selectedImage) {
         formDataToSend.append("image", selectedImage)
       }
-      formDataToSend.append("data", JSON.stringify(formData))
 
       if (editingProduct) {
-        const updatedProducts = products.map((product) =>
-          product.id === editingProduct.id
-            ? { ...formData, id: editingProduct.id, image: imagePreview || product.image }
-            : product,
-        )
-        setProducts(updatedProducts)
+        await axios({
+          url: `product/${editingProduct.id}`,
+          method: "PUT",
+          body: formDataToSend,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        toast.success("Product updated")
       } else {
-        const newProduct: Product = {
-          ...formData,
-          id: Date.now(),
-          image: imagePreview || "/placeholder.svg?height=100&width=100",
-        }
-        setProducts([...products, newProduct])
+        await axios({
+          url: "product",
+          method: "POST",
+          body: formDataToSend,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        toast.success("Product added")
       }
 
+      getProducts()
       closeModal()
     } catch (error) {
-      console.error("Error saving product:", error)
+      console.error(error)
+      toast.error("Error saving product")
     }
   }
 
@@ -132,19 +154,26 @@ export function ProductsSection() {
     setFormData({
       title: product.title,
       category: product.category,
+      rate: product.rate,
       price: product.price,
       description: product.description,
-      stock: product.stock,
-      status: product.status,
+      full_description: product.full_description,
+      uzum_link: product.uzum_link,
       image: product.image,
     })
     setImagePreview(product.image)
     setIsModalOpen(true)
   }
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter((product) => product.id !== id))
+      try {
+        await axios({ url: `product/${id}`, method: "DELETE" })
+        toast.success("Product deleted")
+        getProducts()
+      } catch (error) {
+        toast.error("Error deleting product")
+      }
     }
   }
 
@@ -154,10 +183,11 @@ export function ProductsSection() {
     setFormData({
       title: "",
       category: "",
-      price: { current: 0, old: 0, discount: 0 },
+      rate: 0,
+      price: { current: 0, old_price: 0, discount: 0 },
       description: "",
-      stock: 0,
-      status: "active",
+      full_description: "",
+      uzum_link: "",
       image: "",
     })
     setSelectedImage(null)
@@ -172,38 +202,37 @@ export function ProductsSection() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Products Management</h1>
           <p className="text-slate-600 dark:text-slate-400 mt-1">Manage all products in your store</p>
         </div>
-        <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-orange-500 to-orange-600">
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-gradient-to-r from-orange-500 to-orange-600"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Add Product
         </Button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-6">
+      <div className="bg-white/80 dark:bg-slate-800/80 p-6 rounded-2xl shadow-xl">
         <div className="flex flex-col md:flex-row gap-4">
-          {/* Search */}
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search products..."
-                className="pl-10 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-              />
-            </div>
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search products..."
+              className="pl-10 bg-white/50 dark:bg-slate-700/50"
+            />
           </div>
-
-          {/* Category Filter */}
           <div className="md:w-48">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border border-input rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 border rounded-md"
             >
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category === "all" ? "All Categories" : category}
+              <option value="all">All Categories</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.title}>
+                  {category.title}
                 </option>
               ))}
             </select>
@@ -212,85 +241,45 @@ export function ProductsSection() {
       </div>
 
       {/* Products List */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50">
-        <div className="p-6">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">
-            Products List ({filteredProducts.length})
-          </h2>
-
-          <div className="space-y-4">
-            {filteredProducts.map((product) => (
+      <div className="bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl p-6">
+        <h2 className="text-xl font-semibold mb-6">Products List ({filteredProducts.length})</h2>
+        <div className="space-y-4">
+          {loading ? (
+            <p>Loading...</p>
+          ) : filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50"
+                className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl"
               >
                 <div className="flex items-center space-x-4">
-                  <div className="relative w-16 h-16 bg-white dark:bg-slate-600 rounded-lg overflow-hidden">
-                    <Image
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.title}
-                      fill
-                      className="object-contain p-2"
-                    />
+                  <div className="relative w-16 h-16">
+                    <Image src={product.image} alt={product.title} fill className="object-contain p-2" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-1">
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{product.title}</h3>
-                      <Badge
-                        className={
-                          product.status === "active"
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                        }
-                      >
-                        {product.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{product.category}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-1">{product.description}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="flex items-baseline space-x-2 mb-1">
-                      <span className="text-lg font-bold text-orange-500">
-                        {product.price.current.toLocaleString()} ₽
-                      </span>
-                      <span className="text-sm text-slate-400 line-through">
-                        {product.price.old.toLocaleString()} ₽
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Stock: {product.stock} units</p>
+                  <div>
+                    <h3 className="font-semibold">{product.title}</h3>
+                    <p className="text-sm text-slate-500">{product.category}</p>
                   </div>
                 </div>
-
+                <div className="text-right">
+                  <span className="text-lg font-bold text-orange-500">{product.price.current.toLocaleString()} so'm</span>
+                  <span className="text-sm line-through ml-2">{product.price.old_price.toLocaleString()} so'm</span>
+                </div>
                 <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(product)}
-                    className="bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20 border-blue-200 dark:border-blue-700"
-                  >
+                  <Button size="sm" variant="outline" onClick={() => handleEdit(product)}>
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(product.id)}
-                    className="bg-transparent hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-700 text-red-600 dark:text-red-400"
-                  >
+                  <Button size="sm" variant="outline" onClick={() => handleDelete(product.id)} className="text-red-600">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </motion.div>
-            ))}
-
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-slate-500 dark:text-slate-400">No products found</p>
-              </div>
-            )}
-          </div>
+            ))
+          ) : (
+            <p>No products found</p>
+          )}
         </div>
       </div>
 
@@ -331,18 +320,10 @@ export function ProductsSection() {
                       <div className="space-y-4">
                         <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden border-2 border-dashed border-slate-300 dark:border-slate-600">
                           {imagePreview ? (
-                            <Image
-                              src={imagePreview || "/placeholder.svg"}
-                              alt="Preview"
-                              fill
-                              className="object-contain p-4"
-                            />
+                            <Image src={imagePreview} alt="Preview" fill className="object-contain p-4" />
                           ) : (
                             <div className="flex items-center justify-center h-full">
-                              <div className="text-center">
-                                <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                                <p className="text-sm text-slate-500 dark:text-slate-400">Upload image</p>
-                              </div>
+                              <Upload className="h-8 w-8 text-slate-400" />
                             </div>
                           )}
                         </div>
@@ -367,147 +348,92 @@ export function ProductsSection() {
                       </div>
                     </div>
 
-                    {/* Title and Category */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Product Title
-                        </label>
-                        <Input
-                          value={formData.title}
-                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                          placeholder="Enter product title"
-                          required
-                          className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Category
-                        </label>
-                        <select
-                          value={formData.category}
-                          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                          required
-                          className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border border-input rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                          <option value="">Select category</option>
-                          {categories.slice(1).map((category) => (
-                            <option key={category} value={category}>
-                              {category}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
+                    {/* Title */}
+                    <Input
+                      placeholder="Title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                      className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                    />
+
+                    {/* Category */}
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      required
+                      className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border rounded-md"
+                    >
+                      <option value="">Select category</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.title}>
+                          {cat.title}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Rate */}
+                    <Input
+                      type="number"
+                      placeholder="Rate (e.g. 4.5)"
+                      value={formData.rate}
+                      onChange={(e) => setFormData({ ...formData, rate: Number(e.target.value) })}
+                      required
+                      className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                    />
 
                     {/* Description */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Description
-                      </label>
-                      <textarea
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        placeholder="Enter product description"
-                        rows={3}
-                        required
-                        className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border border-input rounded-md text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="Short Description"
+                      rows={3}
+                      className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border rounded-md"
+                    />
+
+                    {/* Full Description */}
+                    <textarea
+                      value={formData.full_description}
+                      onChange={(e) => setFormData({ ...formData, full_description: e.target.value })}
+                      placeholder="Full Description"
+                      rows={5}
+                      className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border rounded-md"
+                    />
+
+                    {/* Uzum Link */}
+                    <Input
+                      type="url"
+                      placeholder="Uzum Link"
+                      value={formData.uzum_link}
+                      onChange={(e) => setFormData({ ...formData, uzum_link: e.target.value })}
+                      className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                    />
+
+                    {/* Price */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <Input
+                        type="number"
+                        placeholder="Current Price"
+                        value={formData.price.current}
+                        onChange={(e) => setFormData({ ...formData, price: { ...formData.price, current: Number(e.target.value) } })}
+                        className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                      />
+                      <Input
+                        type="number"
+                        placeholder="Old Price"
+                        value={formData.price.old_price}
+                        onChange={(e) => setFormData({ ...formData, price: { ...formData.price, old_price: Number(e.target.value) } })}
+                        className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
+                      />
+                      <Input
+                        type="number"
+                        placeholder="Discount %"
+                        value={formData.price.discount}
+                        onChange={(e) => setFormData({ ...formData, price: { ...formData.price, discount: Number(e.target.value) } })}
+                        className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
                       />
                     </div>
 
-                    {/* Price Section */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Current Price
-                        </label>
-                        <Input
-                          type="number"
-                          value={formData.price.current}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              price: { ...formData.price, current: Number(e.target.value) },
-                            })
-                          }
-                          placeholder="89990"
-                          required
-                          className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Old Price
-                        </label>
-                        <Input
-                          type="number"
-                          value={formData.price.old}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              price: { ...formData.price, old: Number(e.target.value) },
-                            })
-                          }
-                          placeholder="99990"
-                          required
-                          className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Discount %
-                        </label>
-                        <Input
-                          type="number"
-                          value={formData.price.discount}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              price: { ...formData.price, discount: Number(e.target.value) },
-                            })
-                          }
-                          placeholder="10"
-                          required
-                          className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Stock and Status */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Stock Quantity
-                        </label>
-                        <Input
-                          type="number"
-                          min="0"
-                          value={formData.stock}
-                          onChange={(e) => setFormData({ ...formData, stock: Number(e.target.value) })}
-                          placeholder="25"
-                          required
-                          className="bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Status
-                        </label>
-                        <select
-                          value={formData.status}
-                          onChange={(e) =>
-                            setFormData({ ...formData, status: e.target.value as "active" | "inactive" })
-                          }
-                          className="w-full px-3 py-2 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm border border-input rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                          <option value="active">Active</option>
-                          <option value="inactive">Inactive</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
                     <div className="flex space-x-3 pt-4">
                       <Button type="button" variant="outline" onClick={closeModal} className="flex-1 bg-transparent">
                         Cancel

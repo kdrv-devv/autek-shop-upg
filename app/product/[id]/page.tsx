@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  Star,
   Heart,
   Share2,
   ShoppingCart,
@@ -39,7 +38,7 @@ interface Product {
   price: Price; // Narx bo‘limi - alohida interface orqali
   description: string; // Mahsulot tavsifi
   uzum_link: string; // Uzumdagi mahsulot sahifasi havolasi
-  images: string[]; // Mahsulot rasmi uchun pathlar ro‘yxati
+  image: string; // Mahsulot rasmi uchun pathlar ro‘yxati
   category: string; // Mahsulot toifasi (masalan: "smart-devices")
   full_description: string;
 }
@@ -47,7 +46,6 @@ interface Product {
 export default function ProductPage({ params }: ProductPageProps) {
   const { id } = params;
   const [activeTab, setActiveTab] = useState("description");
-  const [activeImage, setActiveImage] = useState(0);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -65,7 +63,6 @@ export default function ProductPage({ params }: ProductPageProps) {
 
     fetchData();
   }, [id]);
-  console.log(product);
 
   if (loading) {
     return (
@@ -112,7 +109,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     {product?.price.discount}
                   </Badge>
                   <Image
-                    src={product?.images[activeImage] || "/placeholder.svg"}
+                    src={product?.image as string || "/placeholder.svg"}
                     alt={product?.title as string}
                     fill
                     className="object-contain p-8"
@@ -121,26 +118,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Thumbnails */}
-              <div className="grid grid-cols-4 gap-4">
-                {product?.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveImage(index)}
-                    className={`relative h-20 bg-white rounded-lg border ${
-                      activeImage === index
-                        ? "border-orange-500"
-                        : "border-slate-200"
-                    } overflow-hidden`}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${product.title} - изображение ${index + 1}`}
-                      fill
-                      className="object-contain p-2"
-                    />
-                  </button>
-                ))}
-              </div>
+             
             </div>
 
             {/* Product Info */}
@@ -212,26 +190,12 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Button>
               </div>
 
-              {/* Features
-              <div className="bg-slate-50 rounded-xl p-4 mb-8">
-                <h3 className="font-medium text-slate-800 mb-3">
-                  Основные характеристики:
-                </h3>
-                <ul className="space-y-2">
-                  {product?.images.map((feature) => (
-                    <li key={feature} className="flex items-start">
-                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-slate-600">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
 
               {/* Share */}
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-slate-500">Поделиться:</span>
                 <div className="flex space-x-2">
-                  <button className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors">
+                  <button onClick={()=> navigator.clipboard.writeText(product?.uzum_link as string)} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors">
                     <Share2 className="h-4 w-4 text-slate-600" />
                   </button>
                 </div>

@@ -59,7 +59,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       setProducts(data?.data);
       }else{
           let data = await axios({
-        url: `product${slug as string}`,
+        url: `product`,
         method: "GET",
       });
       setProducts(data?.data);
@@ -75,9 +75,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     getProducts();
   }, [slug]);
 
-  const categoryName =
-    decodeURIComponent(slug).charAt(0).toUpperCase() +
-    decodeURIComponent(slug).slice(1);
+  const categoryName = slug
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -90,7 +88,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               Главная
             </Link>
             <span className="mx-2">/</span>
-            <span className="font-medium text-slate-700">{categoryName}</span>
+            <span className="font-medium text-slate-700">{categoryName == "undefined" ? "" : categoryName }</span>
           </div>
 
           {/* Category Header */}
@@ -205,7 +203,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                               </Badge>
                               <Image
                                 src={
-                                  `http://localhost:3000/${product.image}` ||
+                                  `http://localhost:3000/${product?.image}` ||
                                   "/placeholder.svg"
                                 }
                                 alt={product.title}
@@ -285,10 +283,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                               </p>
                               <div className="mt-4 flex items-baseline space-x-2">
                                 <span className="text-lg font-bold text-orange-500">
-                                  {product.price.current}
+                                  {product.price.current.toLocaleString()} so'm
                                 </span>
                                 <span className="text-sm text-slate-400 line-through">
-                                  {product.price.old_price}
+                                  {product.price.old_price.toLocaleString()} so'm
                                 </span>
                               </div>
                             </div>
