@@ -48,6 +48,23 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+
+    useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        const res = await axios({ url: "popular-prod", method: "GET" });
+        console.log(res?.data);
+        setRelatedProducts(res); // backendda `data.data` bo‘lishi mumkin
+      } catch (err) {
+        console.error("Error fetching related products:", err);
+      }
+    };
+    fetchRelated();
+  }, []);
+
+
+
+
   const axios = useAxios();
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +80,10 @@ export default function ProductPage({ params }: ProductPageProps) {
     fetchData();
   }, [id]);
 
+
+
+
+
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
@@ -71,18 +92,6 @@ export default function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-  useEffect(() => {
-    const fetchRelated = async () => {
-      try {
-        const res = await axios({ url: "popular-prod", method: "GET" });
-        console.log(res);
-        setRelatedProducts(res); // backendda `data.data` bo‘lishi mumkin
-      } catch (err) {
-        console.error("Error fetching related products:", err);
-      }
-    };
-    fetchRelated();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
