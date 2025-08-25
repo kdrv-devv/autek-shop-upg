@@ -48,7 +48,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [activeTab, setActiveTab] = useState("description");
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
   const axios = useAxios();
   useEffect(() => {
     const fetchData = async () => {
@@ -71,6 +71,20 @@ export default function ProductPage({ params }: ProductPageProps) {
       </div>
     );
   }
+
+
+  useEffect(() => {
+  const fetchRelated = async () => {
+    try {
+      const res = await axios({ url: "popular-prod", method: "GET" })
+      setRelatedProducts(res.data.data) // backendda `data.data` bo‘lishi mumkin
+    } catch (err) {
+      console.error("Error fetching related products:", err)
+    }
+  }
+  fetchRelated()
+}, [])
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -233,34 +247,41 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Related Products */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold text-slate-900 mb-8">
-              Похожие товары
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((item) => (
-                <div
-                  key={item}
-                  className="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  <div className="relative h-40 bg-slate-50">
-                    <Image
-                      src={`https://www.smart.com.kh/_next/image?url=https%3A%2F%2Fsmartaxiata-website-prod-v2.s3.ap-southeast-1.amazonaws.com%2FBlack_i_Phone_16_a75508d0e1.png&w=3840&q=75`}
-                      alt={`Похожий товар ${item}`}
-                      fill
-                      className="object-contain p-4"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium text-slate-900 line-clamp-1">
-                      Xiaomi Redmi Note 12
-                    </h3>
-                    <p className="text-sm text-slate-500 mt-1">от 19 990 ₽</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Related Products */}
+<div className="mt-16">
+  <h2 className="text-2xl font-bold text-slate-900 mb-8">
+    Похожие товары
+  </h2>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    {relatedProducts.length > 0 ? (
+      relatedProducts?.map((item) => (
+        <div
+          key={item.id}
+          className="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow"
+        >
+          <div className="relative h-40 bg-slate-50">
+            <Image
+              src={item.image || "/placeholder.svg"}
+              alt={item.title}
+              fill
+              className="object-contain p-4"
+            />
           </div>
+          <div className="p-4">
+            <h3 className="font-medium text-slate-900 line-clamp-1">
+              {item.title}
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">
+              от {item.price.current.toLocaleString()} so'm
+            </p>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-slate-500">Нет похожих товаров</p>
+    )}
+  </div>
+</div>
         </div>
       </main>
       <Footer />
