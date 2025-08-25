@@ -16,9 +16,8 @@ import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import Image from "next/image";
 import { useAxios } from "@/hooks/useAxios";
-import { Rate } from 'antd';
+import { Rate } from "antd";
 import { log } from "console";
-
 
 interface ProductPageProps {
   params: {
@@ -49,7 +48,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [activeTab, setActiveTab] = useState("description");
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const axios = useAxios();
   useEffect(() => {
     const fetchData = async () => {
@@ -73,20 +72,18 @@ export default function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-
   useEffect(() => {
-  const fetchRelated = async () => {
-    try {
-      const res = await axios({ url: "popular-prod", method: "GET" })
-      console.log(res);
-      setRelatedProducts(res.data) // backendda `data.data` bo‘lishi mumkin
-    } catch (err) {
-      console.error("Error fetching related products:", err)
-    }
-  }
-  fetchRelated()
-}, [])
-
+    const fetchRelated = async () => {
+      try {
+        const res = await axios({ url: "popular-prod", method: "GET" });
+        console.log(res);
+        setRelatedProducts(res.data); // backendda `data.data` bo‘lishi mumkin
+      } catch (err) {
+        console.error("Error fetching related products:", err);
+      }
+    };
+    fetchRelated();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -125,7 +122,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     {product?.price.discount}
                   </Badge>
                   <Image
-                    src={product?.image as string || "/placeholder.svg"}
+                    src={(product?.image as string) || "/placeholder.svg"}
                     alt={product?.title as string}
                     fill
                     className="object-contain p-8"
@@ -134,7 +131,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Thumbnails */}
-             
             </div>
 
             {/* Product Info */}
@@ -206,12 +202,18 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Button>
               </div>
 
-
               {/* Share */}
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-slate-500">Поделиться:</span>
                 <div className="flex space-x-2">
-                  <button onClick={()=> navigator.clipboard.writeText(product?.uzum_link as string)} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors">
+                  <button
+                    onClick={() =>
+                      navigator.clipboard.writeText(
+                        product?.uzum_link as string
+                      )
+                    }
+                    className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-orange-100 transition-colors"
+                  >
                     <Share2 className="h-4 w-4 text-slate-600" />
                   </button>
                 </div>
@@ -249,41 +251,41 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Related Products */}
-        {/* Related Products */}
-<div className="mt-16">
-  <h2 className="text-2xl font-bold text-slate-900 mb-8">
-    Похожие товары
-  </h2>
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-    {relatedProducts.length > 0 ? (
-      relatedProducts?.map((item) => (
-        <div
-          key={item.id}
-          className="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow"
-        >
-          <div className="relative h-40 bg-slate-50">
-            <Image
-              src={item.image || "/placeholder.svg"}
-              alt={item.title}
-              fill
-              className="object-contain p-4"
-            />
+          {/* Related Products */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-slate-900 mb-8">
+              Похожие товары
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {relatedProducts.length > 0 ? (
+                relatedProducts?.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    <div className="relative h-40 bg-slate-50">
+                      <Image
+                        src={item?.image || "/placeholder.svg"}
+                        alt={item?.title}
+                        fill
+                        className="object-contain p-4"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-medium text-slate-900 line-clamp-1">
+                        {item?.title}
+                      </h3>
+                      <p className="text-sm text-slate-500 mt-1">
+                        от {item.price.toLocaleString()} so'm
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-slate-500">Нет похожих товаров</p>
+              )}
+            </div>
           </div>
-          <div className="p-4">
-            <h3 className="font-medium text-slate-900 line-clamp-1">
-              {item.title}
-            </h3>
-            <p className="text-sm text-slate-500 mt-1">
-              от {item.price.current.toLocaleString()} so'm
-            </p>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="text-slate-500">Нет похожих товаров</p>
-    )}
-  </div>
-</div>
         </div>
       </main>
       <Footer />
