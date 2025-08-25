@@ -143,10 +143,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                   {product?.price.current.toLocaleString()} so'm
                 </span>
                 <span className="text-xl text-slate-400 line-through">
-                  {product?.price.old_price}
+                  {product?.price.old_price.toLocaleString()} so'm
                 </span>
                 <Badge className="bg-green-100 text-green-800 border-green-200">
-                  Скидка {product?.price.discount.toLocaleString()} so'm
+                  Скидка {product?.price.discount} %
                 </Badge>
               </div>
 
