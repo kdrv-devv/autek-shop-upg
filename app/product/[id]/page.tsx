@@ -17,7 +17,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAxios } from "@/hooks/useAxios";
 import { Rate } from "antd";
-import { log } from "console";
 
 interface ProductPageProps {
   params: {
@@ -152,10 +151,10 @@ export default function ProductPage({ params }: ProductPageProps) {
               {/* Price */}
               <div className="flex items-baseline space-x-3 mb-6">
                 <span className="text-3xl font-bold text-orange-500">
-                  {product?.price.current.toLocaleString()} so'm
+                  {String(product?.price?.current)?.toLocaleString()} so'm
                 </span>
                 <span className="text-xl text-slate-400 line-through">
-                  {product?.price.old_price.toLocaleString()} so'm
+                  {String(product?.price.old_price).toLocaleString()} so'm
                 </span>
                 <Badge className="bg-green-100 text-green-800 border-green-200">
                   Скидка {product?.price.discount} %
