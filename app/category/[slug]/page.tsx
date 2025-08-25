@@ -205,7 +205,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                               </Badge>
                               <Image
                                 src={
-                                  `http://localhost:3000/${product.image}` ||
+                                  `https://autek-shop-upg.vercel.app/${product.image}` ||
                                   "/placeholder.svg"
                                 }
                                 alt={product.title}
@@ -268,7 +268,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                               </Badge>
                               <Image
                                 src={
-                                  `http://localhost:3000/${product.image}` ||
+                                  `https://autek-shop-upg.vercel.app/${product.image}` ||
                                   "/placeholder.svg"
                                 }
                                 alt={product.title}

@@ -98,7 +98,7 @@ export function CategoriesSection() {
 
                     {/* Content */}
                     <div className="relative h-full    z-10 flex flex-col items-center !justify-between text-center">
-                      <Image src={ `http://localhost:3000/${category.image as string}` } width={60} height={60} alt={category.title || "Icon"} className="text-4xl  group-hover:scale-110 transition-transform duration-300"/>
+                      <Image src={ `https://autek-shop-upg.vercel.app/${category.image as string}` } width={60} height={60} alt={category.title || "Icon"} className="text-4xl  group-hover:scale-110 transition-transform duration-300"/>
                        
                       
                       <h3 className="text-sm font-semibold text-slate-700 group-hover:text-orange-600 transition-colors duration-300 mb-2">

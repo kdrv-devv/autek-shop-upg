@@ -77,7 +77,7 @@ export function ProductCard3D({ img , title } : {img:any , title:any , loading:a
             transition={{ duration: 0.3 }}
           >
               <Image
-              src={`http://localhost:3000/${img}`}
+              src={`https://autek-shop-upg.vercel.app/${img}`}
               alt={title && "AUTEK MAXSULOTI"}
               fill
               className="object-contain drop-shadow-2xl"

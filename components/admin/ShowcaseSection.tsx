@@ -85,7 +85,7 @@ export function ShowcaseSection() {
         formData.append("image", selectedImage);
       }
 
-      const response = await fetch("http://localhost:3000/api/showcase", {
+      const response = await fetch("https://autek-shop-upg.vercel.app/showcase", {
         method: "PUT",
         body: formData,
       });
