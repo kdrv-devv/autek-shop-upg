@@ -76,7 +76,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       try {
         const res = await axios({ url: "popular-prod", method: "GET" });
         console.log(res);
-        setRelatedProducts(res.data); // backendda `data.data` bo‘lishi mumkin
+        setRelatedProducts(res); // backendda `data.data` bo‘lishi mumkin
       } catch (err) {
         console.error("Error fetching related products:", err);
       }
@@ -250,7 +250,6 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Related Products */}
-          {/* Related Products */}
           <div className="mt-16">
             <h2 className="text-2xl font-bold text-slate-900 mb-8">
               Похожие товары
@@ -275,7 +274,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         {item?.title}
                       </h3>
                       <p className="text-sm text-slate-500 mt-1">
-                        от {item.price.toLocaleString()} so'm
+                        от {item?.price.toLocaleString()} so'm
                       </p>
                     </div>
                   </div>
