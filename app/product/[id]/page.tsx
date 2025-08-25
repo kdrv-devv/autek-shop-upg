@@ -77,7 +77,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const fetchRelated = async () => {
     try {
       const res = await axios({ url: "popular-prod", method: "GET" })
-      setRelatedProducts(res.data.data) // backendda `data.data` bo‘lishi mumkin
+      setRelatedProducts(res.data) // backendda `data.data` bo‘lishi mumkin
     } catch (err) {
       console.error("Error fetching related products:", err)
     }
